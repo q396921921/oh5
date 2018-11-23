@@ -1,3 +1,4 @@
+var url='http://192.168.1.238:1239';
 var id=GetQueryString('new_id');
 if(id!=null){
 	console.log(id);
@@ -10,9 +11,9 @@ if(id!=null){
 				CreatHtml(response);
 			}
 		};
-	xhr.open("POST","http://192.168.1.238:1239/users/getNews", true);
+	xhr.open("POST",url+"/users/getNews", true);
 	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xhr.send(JSON.stringify({new_id:id}));
+	xhr.send(JSON.stringify({new_id:41}));
 }
 function jiexi(val){
 	var a=JSON.parse(val).data[0];
@@ -22,7 +23,7 @@ function jiexi(val){
 	a.title2=JSON.parse(a.title2);
 	a.time=new Date(+new Date(a.time) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '').split(' 00:00:00')[0];
 	for(var i=0;i<a.imgPath.length;i++){
-		a.newsData.info=a.newsData.info.replace('<picture>','<br><img src=http://192.168.1.238:1239/upload/'+a.imgPath[i]+' onClick=yulan(this.src);><br>');
+		a.newsData.info=a.newsData.info.replace('<picture>','<br><img src='+url+'/upload/'+a.imgPath[i]+' onClick=yulan(this.src);><br>');
 	}
 	return a;
 }

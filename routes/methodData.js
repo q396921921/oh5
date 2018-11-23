@@ -128,7 +128,7 @@ module.exports = {
         let isUpdate = body.isUpdate;
         let files = req.files;
         let fileStr = "";
-        otherData.getNews([new_id], (err, ret) => {
+        otherData.getNews("", [new_id], (err, ret) => {
             if (err) {
                 cb('error');
             } else {

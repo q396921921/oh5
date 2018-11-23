@@ -44,12 +44,12 @@ paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/
  	node.style.display="none";
  }
  function yulan(url) {
-	document.location = 'tococos://url=dsoajrfoasjf';
 	if(url!=null){
 		document.getElementById('showimg').src=url;
 		document.getElementById('showimage').style.display="block";
 		new PinchZoom.default(document.getElementById('showimgdiv'),{});
 	}
+	document.location = 'tococos://url='+url;
  }
  
 

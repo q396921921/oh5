@@ -27,29 +27,116 @@ paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/
 <script src="respond.min.js"></script>
 </head>
 <body style="background-color:#CCC">
-<div class="gridContainer clearfix">
-  <ul>
-    <li class="news-item">
-        <div class="item-inner">
-            <span class="news-title" style="font-size:15px; float:left;">的卡口那里是国内；拉丝钢；了解到；就；四朵金花</span>
-            <img class="news-img" src="img/2.png" />
-           
-        </div>
-    </li>
- </ul>
+<div id="All" class="gridContainer clearfix">
+<!--
+ <div style="width:100%; overflow:hidden; background-color:#FFF;">
+ 	<div style="width:100%; overflow:hidden; padding-top:5px; padding-bottom:5px">
+ 	<div style="width:98%;overflow:hidden;">标题标题标题标题标题标题标题标题标题</div>
+    <div style="width:80%;overflow:hidden;">2018-11-23</div>
+    <img style="width:33%; height:170px;">
+    <img style="width:33%; height:170px;">
+    <img style="width:33%; height:170px;">
+ </div>-->
+ 
 </div>
 </body>
 <script type="text/javascript">
+var url='http://192.168.1.238:1239';
+var a=document.getElementById('All');
 var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState == 4 && (xhr.status >= 200 && xhr.status < 400)) {
 			var response = xhr.responseText;
 			response=JSON.parse(response).data;
 			console.log(response);
+			CreatNew(response);
 		}
 	};
-xhr.open("POST","http://192.168.1.101:1238/users/getNews", false);
-xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-xhr.send();    
+	xhr.open("POST",url+"/head/getNews", true);
+	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+	xhr.send(); 
+function CreatNew(val){
+	for(var i=0;i<val.length;i++){
+		val[i].imgPath=val[i].imgPath.split(";");
+		var size=val[i].newsData.split('<picture>');
+	    if(size.length-1>1){
+			new2(val[i]);
+		}else{
+			new1(val[i]);
+		}
+	}
+}
+var selectnew=function(){
+	console.log('选中新闻id'+this.id);
+	document.location = 'tococos://id='+this.id;
+}
+function new1(mes){
+ mes.title=JSON.parse(mes.title);
+ mes.time=new Date(+new Date(mes.time) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' ').replace(/\.[\d]{3}Z/, '').split(' 00:00:00')[0];
+ var div=document.createElement('div');
+ var div1=document.createElement('div');
+ div.className='new1_div';
+ div.id=mes.new_id;
+ div.addEventListener("click",selectnew);
+ div1.className='new1_div_div';
+ 
+ var div_title=document.createElement('div');
+ div_title.className='new1_titlediv';
+ div_title.innerHTML=mes.title.info;
+ 
+ var div_time=document.createElement('div');
+ div_time.className='new1_timediv';
+ div_time.innerHTML=mes.time;
+ 
+ var img=document.createElement('img');
+ img.className='new1_img';
+ img.src=url+'/upload/'+mes.imgPath[0];
+ 
+ div1.appendChild(div_title);
+ div1.appendChild(div_time);
+ div1.appendChild(img);
+ 
+ div.appendChild(div1);
+ a.appendChild(div);
+}
+function new2(mes){
+ mes.title=JSON.parse(mes.title);
+ mes.time=new Date(+new Date(mes.time) + 8 * 3600 * 1000).toISOString().replace(/T/g, ' '). replace(/\.[\d]{3}Z/, '').split(' 00:00:00')[0];
+ var div=document.createElement('div');
+ var div1=document.createElement('div');
+ div.className='new2_div';
+ div.id=mes.new_id;
+ div.addEventListener("click",selectnew);
+ div1.className='new2_div_div';
+ 
+ var div_title=document.createElement('div');
+ div_title.className='new2_titlediv';
+ div_title.innerHTML=mes.title.info;
+ 
+ var div_time=document.createElement('div');
+ div_time.className='new2_timediv';
+ div_time.innerHTML=mes.time;
+ 
+ var img=document.createElement('img');
+ img.className='new2_img';
+ img.src=url+'/upload/'+mes.imgPath[0];
+ var img1=document.createElement('img');
+ img1.className='new2_img';
+ img1.src=url+'/upload/'+mes.imgPath[1];
+ var img2=document.createElement('img');
+ img2.className='new2_img';
+ img2.src=url+'/upload/'+mes.imgPath[2];
+ 
+ div1.appendChild(div_title);
+ div1.appendChild(div_time);
+ div1.appendChild(img);
+ div1.appendChild(img1);
+ div1.appendChild(img2);
+ 
+ div.appendChild(div1);
+ a.appendChild(div);
+}
+
+
 </script>
 </html>

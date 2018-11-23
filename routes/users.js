@@ -461,7 +461,6 @@ router.post('/insertNew', function (req, res, next) {
 })
 router.post('/getNews', function (req, res, next) {
   let body = req.body;
-  console.log(body);
   // body = JSON.parse(Object.keys(body));
   mdData.getNews(body, (ret) => {
     res.send(ret)

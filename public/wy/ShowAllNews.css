@@ -16,6 +16,60 @@ ul{
 .ie6 img {
 	width:100%;
 }
+.new1_div{
+ width:100%;
+ height:180px;
+ background-color:#FFF;
+ margin-bottom:3px;
+}
+.new1_div_div{
+width:100%; height:170px;padding-top:5px;
+}
+.new1_titlediv{
+ width:70%; 
+ height:90%; 
+ float:left;
+ font-size:25px;
+ font-weight: 400;
+}
+.new1_timediv{
+ width:70%; 
+ height:10%; 
+ float:left;
+ color:#888;
+}
+.new1_img{
+width:30%; height:170px;
+}
+
+.new2_div{
+width:100%; 
+overflow:hidden; 
+background-color:#FFF;
+margin-bottom:3px;
+}
+.new2_div_div{
+width:100%; overflow:hidden; padding-top:5px; padding-bottom:5px
+}
+.new2_titlediv{
+width:100%;
+overflow:hidden;
+font-size:25px;
+font-weight: 400;
+}
+.new2_timediv{
+width:100%;
+overflow:hidden;
+float:left;
+color:#888;
+margin-top:15px;
+}
+.new2_img{
+width:33%; 
+height:170px;
+float:left;
+padding-left:2px;
+}
 
 /*
 	Dreamweaver 流体网格属性

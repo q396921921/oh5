@@ -1320,21 +1320,16 @@ module.exports = {
           async.eachSeries(
             state_arr,
             function (arr, cb3) {
-              if (arr[0] != "0") {
-                otherOrder.insertDetailState(arr, (err, ret) => {
-                  if (err) {
-                    debug("通过具体状态名与等级创建具体状态出现错误");
-                    cb("error");
-                  } else {
-                    let detail_state_id = ret.insertId;
-                    detail_state_id_arr.push(detail_state_id);
-                    cb3();
-                  }
-                });
-              } else {
-                detail_state_id_arr.push(null);
-                cb3();
-              }
+              otherOrder.insertDetailState(arr, (err, ret) => {
+                if (err) {
+                  debug("通过具体状态名与等级创建具体状态出现错误");
+                  cb("error");
+                } else {
+                  let detail_state_id = ret.insertId;
+                  detail_state_id_arr.push(detail_state_id);
+                  cb3();
+                }
+              });
             },
             function (err) {
               cb2(null, 3);
