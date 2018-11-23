@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>响应式布局</title>
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/js/jquery.min.js"></script>
+    <script>
+        var path;
+        $(function () {
+            if (document.cookie.length != 0) {
+                var ck1 = document.cookie.split(';');
+                var state;
+                var menu;
+                for (var i = 0; i < ck1.length; i++) {
+                    var ck2 = ck1[i];
+                    var ck2 = ck2.split('=');
+                    if (ck2[0].trim() == 'state') {
+                        state = ck2[1];
+                    } else if (ck2[0].trim() == 'menu') {
+                        menu = ck2[1];
+                    } else if (ck2[0].trim() == 'path') {
+                        path = decodeURIComponent(ck2[1]);
+                    }
+                }
+            }
+
+            if (state == 4) {
+                window.location.href = path + "appli/ceshi" + menu + '?menu=' + menu;
+            } else if (state == 3) {
+
+            } else if (state == 2) {
+                window.location.href = path + "user/ceshi" + menu + '?menu=' + menu;
+            } else if (state == 1) {
+                window.location.href = path + "other/ceshi" + menu + '?menu=' + menu;
+            } else if (state == 5) {
+                window.location.href = path + "product/ceshi" + menu + '?menu=' + menu;
+            } else if (state == 6) {
+                window.location.href = path + "dep/ceshi" + menu + '?menu=' + menu;
+            }
+        });
+
+    </script>
+
+<body>
+</body>
+
+</html>

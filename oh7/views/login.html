@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>借贷后台</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<script src="/js/jquery.min.js"></script>
+<script>
+    $(function () {
+
+    })
+</script>
+<style>
+    * {
+        margin: 0px;
+        padding: 0px;
+    }
+
+    #a {
+        border: 2px solid;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        width: 400px;
+        height: 70px;
+        background-color: #5A9AD7;
+        position: fixed;
+        left: 0px;
+        top: 10px;
+        right: 0px;
+        margin: auto;
+        text-align: center;
+        line-height: 70px;
+    }
+
+    #b {
+        border: 1px solid green;
+        border-bottom-left-radius: 15px;
+        border-bottom-right-radius: 15px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+        width: 400px;
+        height: 250px;
+        background-color: #CCE8CF;
+        position: fixed;
+        left: 0px;
+        right: 0px;
+        top: 0px;
+        bottom: 0px;
+        margin: auto;
+        padding: left 50px;
+    }
+
+    body {
+        background: skyblue;
+    }
+
+    #c {
+        margin-left: 70px;
+    }
+
+    input {
+        margin-top: 30px;
+    }
+</style>
+<script>
+    var path = "";
+    $(function () {
+        if (document.cookie.length != 0) {
+            var ck1 = document.cookie.split(';');
+            for (var i = 0; i < ck1.length; i++) {
+                var ck2 = ck1[i];
+                var ck2 = ck2.split('=');
+                if (ck2[0].trim() == 'path') {
+                    path = decodeURIComponent(ck2[1]);
+                }
+            }
+        }
+        $(document).keypress(function (e) {
+            var eCode = e.keyCode ? e.keyCode : e.which ? e.which : e.charCode;
+            if (eCode == 13) {
+                $("#submit").trigger('click');
+            }
+        });
+        if (window != top) {
+            parent.window.location.href = path + "login";
+            return;
+        }
+    })
+    function setData() {
+        var username = $("#username").val();
+        var password = $("#password").val();
+        $.ajax({
+            url: path + "log",
+            type: "post",
+            data: {
+                "username": username,
+                "password": password
+            },
+            async: false,
+            dataType: "text",
+            success: function (result) {
+                if (result != 'error') {
+                    window.location.href = path + "main?state=4&menu=1";
+                }
+            }
+        })
+    }
+</script>
+
+<body>
+    <div id=a>
+        <h1 style="color: white">借贷后台</h1>
+    </div>
+    <div id=b>
+        <h2 style="margin-left: 150px;margin-top: 20px;">账户登录</h2>
+        <div id="c">
+            用户名:
+            <input id="username" type="text" name="username">
+            <br> 密&nbsp;&nbsp;码:
+            <input id="password" type="password" name="password">
+            <br>
+            <input id="submit" type="button" value="登录" style="margin-left: 120px" onclick="setData()">
+        </div>
+    </div>
+</body>
+
+</html>

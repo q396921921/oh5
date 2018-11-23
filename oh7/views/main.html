@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/powers.js"></script>
+    <script src="/js/jquery.cookie.js"></script>
+    <script>
+        var path;
+        var username;
+        var noOrder1;
+        var noOrder2;
+        $(function () {
+            // 获取cookie中的用户名，然后赋值到隐藏标签中
+            if (document.cookie.length != 0) {
+                var ck1 = document.cookie.split(';');
+                var state;
+                var state2;
+                var menu;
+                for (var i = 0; i < ck1.length; i++) {
+                    var ck2 = ck1[i];
+                    var ck2 = ck2.split('=');
+                    if (ck2[0].trim() == 'username') {
+                        username = ck2[1]
+                    } else if (ck2[0].trim() == 'state') {
+                        state = ck2[1];
+                    } else if (ck2[0].trim() == 'menu') {
+                        menu = ck2[1];
+                    } else if (ck2[0].trim() == 'path') {
+                        path = decodeURIComponent(ck2[1]);
+                    }
+                }
+                getUsername(username)
+                $('#username').val(username)
+                bindEvents()
+                getEmp();
+                if (role_type == 4) {
+                    notify(1);
+                    notify(2);
+                }
+            }
+            if (r23) {
+                let str = '<tr><td><input type="button" class="canButton" value="商品管理" onclick="jump(5,1)"></td></tr>'
+                    + '<tr><td><input type="button" class="canButton" value="其他管理" onclick="jump(1,1)"></td></tr>'
+                    + '<tr><td><input type="button" class="canButton" value="部门管理" onclick="jump(6,1)"></td></tr>';
+                $(str).appendTo($("#b tbody"));
+            }
+        })
+        function getUsername(username) {
+            if (username && username != "") {
+                $.ajax({
+                    url: path + "getUser",
+                    type: "post",
+                    data: {
+                        username: username,
+                    },
+                    async: false,
+                    dataType: "text",
+                    success: function (result) {
+                        let name = JSON.parse(result).data[0].name;
+                        $("#name").html(name);
+                    }
+                })
+            }
+        }
+        function notify(order_type) {
+            let num = getNoHandleOrder(order_type);
+            if (order_type == 1) {
+                noOrder1 = parseInt(num);
+            } else if (order_type == 2) {
+                noOrder2 = parseInt(num);
+            }
+            consoleText(num, 1)
+            setInterval(function () {
+                let num = getNoHandleOrder(order_type);
+                if (order_type == 1) {
+                    if (parseInt(num) > noOrder1) {
+                        num = num - noOrder1;
+                        noOrder1 = noOrder1 + num;
+                        consoleText(num, 2)
+                    }
+                } else if (order_type == 2) {
+                    if (parseInt(num) > noOrder2) {
+                        num = num - noOrder2;
+                        noOrder2 = noOrder2 + num;
+                        consoleText(num, 2)
+                    }
+                }
+            }, 60000)
+            function consoleText(num, data) {
+                let body;
+                if (data == 1) {
+                    if (order_type == 1) {
+                        body = '您有' + num + '个待处理的申请订单!';
+                    } else if (order_type == 2) {
+                        body = '您有' + num + '个待处理的询值订单!';
+                    }
+                } else if (data == 2) {
+                    if (order_type == 1) {
+                        body = '您有' + num + '个新申请订单';
+                    } else if (order_type == 2) {
+                        body = '您有' + num + '个新询值订单';
+                    }
+                }
+                if (!('Notification' in window)) {
+                    alert('你的浏览器不支持Notification')
+                }
+                //检查是否拥有通知权限；有就通知，没有请求；
+                else if (Notification.permission == 'granted') {
+                    var options = {
+                        icon: 'http://www.itechat.cn/ya8526/html/images/img10.jpg',
+                        body: body
+                    }
+                    var notification = new Notification('消息提醒!', options);
+                } else if (Notification.permission !== 'denied') {
+                    Notification.requestPermission(
+                        function (permission) {
+                            if (permission == 'granted') {
+                                var notification = new Notification('您有待处理的订单!');
+                            }
+                        }
+                    );
+                }
+            }
+        }
+        function getNoHandleOrder(order_type) {
+            let num = "";
+            $.ajax({
+                url: path + "getNoHandleOrders",
+                type: "post",
+                data: {
+                    order_type: order_type,
+                    role_type: role_type,
+                    userdep_id: userdep_id,
+                    busoff_id: busoff_id
+                },
+                async: false,
+                dataType: "text",
+                success: function (result) {
+                    num = result;
+                }
+            })
+            return num;
+        }
+        // 注销用户的方法
+        function outUser() {
+            $.ajax({
+                url: path + "outUser",
+                type: "post",
+                data: {
+                    "username": $('#username').val(),
+                },
+                async: false,
+                dataType: "text",
+                success: function (result) {
+                    if (result != 'error') {
+                        $.cookie("username", '', { path: '/', expires: -1 });
+                        window.location.href = path + "login";
+                    }
+                }
+            })
+        }
+        function jump(num1, num2) {
+            window.location.href = path + 'main?state=' + num1 + '&menu=' + num2
+        }
+
+        // 绑定按钮的三种事件
+        function bindEvents() {
+            $(".canButton").each(function () {
+                $(this).bind('mouseover', function () {
+                    $(this).css('background', 'green')
+                })
+                $(this).bind('mouseout', function () {
+                    $(this).css('background', '')
+                })
+                $(this).bind('click', function () {
+                    $(this).css('color', 'purple')
+                })
+            })
+        }
+        // 鼠标放上去后，按钮背景会变色，证明可以点击
+        function changeGroundGreen(t) {
+            $(this).css('background', 'green')
+        }
+        // 鼠标点击后变为紫色
+        function changeFontColor(t) {
+            $(this).css('color', 'purple')
+        }
+        // 鼠标离开后背景变为原来的颜色
+        function removeGround(t) {
+            $(t).css('background', '')
+        }
+    </script>
+
+<body>
+    <div id="out">
+
+        <div id="a">
+            <input id="username" type="hidden" value="">
+            <input type="button" style="margin-left:15px;" value="用户:">
+            <span id="name"></span>
+            <input type="button" class="canButton" value="注销" onclick="outUser()" style="margin-left:50px;">
+        </div>
+        <div id="b">
+            <table cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <td>系统菜单</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="button" class="canButton" value="申请管理" onclick="jump(4,1)">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input type="button" class="canButton" value="账户管理" onclick="jump(2,3)">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="c">
+            <iframe style="margin: 0;padding: 0;width: 89.7%;height: 100%;" src="iframe" frameborder="0"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        background: white;
+    }
+
+    #out {
+        width: 100%;
+        height: 850px;
+    }
+
+    #a {
+        width: 100%;
+        height: 5%;
+        background: black;
+    }
+
+    #b {
+        float: left;
+        width: 10%;
+        height: 100%;
+        border: 2px solid black;
+        left: 0;
+        background: skyblue;
+    }
+
+    #a input {
+        height: 100%;
+        width: 50px;
+        font-weight: bold;
+        font-size: 17px;
+    }
+
+    #c {
+        width: 100%;
+        height: 100%;
+        background: #97C65E
+    }
+
+    #a span {
+        margin-left: 10px;
+        text-align: center;
+        color: seashell;
+        font-weight: bold;
+        font-size: 20px;
+    }
+
+    table {
+        text-align: center;
+        width: 100%;
+        border: 0;
+    }
+
+    thead tr {
+        background: skyblue;
+        color: blue;
+        font-weight: bold;
+        font-size: 23px;
+    }
+
+    tbody tr td {
+        width: 100px;
+        height: 40px;
+        ;
+    }
+
+    td input {
+        width: 100%;
+        height: 100%;
+        font-size: 20px;
+    }
+
+    tr td {
+        border: 1px solid black;
+    }
+
+    iframe {
+        float: right;
+        margin-top: 30px;
+        width: 1198px;
+        height: 630px;
+    }
+</style>
