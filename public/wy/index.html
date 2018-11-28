@@ -29,8 +29,9 @@ paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/
 <body>
 <div id="showimage" style="width:100%; height:100%; background-color:#000; position:fixed; text-align:center; display:none;" onClick="closeyulan(this)">
  	<div id="showimgdiv" ><!--style=" margin-top:50%; transform:translate(0,-70%);"-->
-    	 <img id="showimg" src=""/>
-    </div>
+		 <img id="showimg" src=""/>
+		 <img style="float:right;margin-bottom:3px;width:30px;height:30px;" src="http://oh5.daotongkeji.com/upload/xiazai.jpg" onclick="saveimg();">
+	</div>
 </div>
 <!--上面是用来展示单张图片的-->
 <div id="All" class="gridContainer clearfix">
@@ -43,15 +44,20 @@ paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/
  function closeyulan(node){
  	node.style.display="none";
  }
+ var imgurl=null;
  function yulan(url) {
 	if(url!=null){
 		document.getElementById('showimg').src=url;
 		document.getElementById('showimage').style.display="block";
 		new PinchZoom.default(document.getElementById('showimgdiv'),{});
+		imgurl=url;
 	}
-	document.location = 'tococos://url='+url;
  }
- 
+ function saveimg(){
+	console.log(imgurl);
+	document.location = 'tococos://'+imgurl;
+	alert('以保存');
+ }
 
 </script>
 </html>

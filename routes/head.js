@@ -16,6 +16,9 @@ var mdOrder = require('./methodOrder');
 var mdEmp = require('./methodEmp');
 var mdData = require('./methodData');
 
+router.post('/arrayBufferToBase64', function (req, res, next) {
+    
+})
 // 创建一个订单
 router.post('/createOrder', function (req, res, next) {
     let body = req.body

@@ -1,4 +1,4 @@
-var url='http://192.168.1.238:1239';
+var url='http://oh5.daotongkeji.com';
 var id=GetQueryString('new_id');
 if(id!=null){
 	console.log(id);
@@ -11,9 +11,9 @@ if(id!=null){
 				CreatHtml(response);
 			}
 		};
-	xhr.open("POST",url+"/users/getNews", true);
+	xhr.open("POST",url+"/head/getNews", true);
 	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-	xhr.send(JSON.stringify({new_id:41}));
+	xhr.send(JSON.stringify({new_id:id}));
 }
 function jiexi(val){
 	var a=JSON.parse(val).data[0];
@@ -25,6 +25,7 @@ function jiexi(val){
 	for(var i=0;i<a.imgPath.length;i++){
 		a.newsData.info=a.newsData.info.replace('<picture>','<br><img src='+url+'/upload/'+a.imgPath[i]+' onClick=yulan(this.src);><br>');
 	}
+	a.newsData.info=a.newsData.info.replace('\r\n', '<br>');
 	return a;
 }
 function CreatHtml(val){
@@ -34,7 +35,7 @@ function CreatHtml(val){
 		h2.style.fontSize=val.title.title_size+'px';
 		h2.style.color=val.title.title_color;
 		h2.style.fontWeight=val.title.title_weight;
-		h2.style.lineHeight='1.4px';
+		//h2.style.lineHeight='1.4px';
 		h2.innerHTML=val.title.info;
 		a.appendChild(h2);
 	}
@@ -58,8 +59,10 @@ function CreatHtml(val){
 	}
 	if(val.newsData!=null){
 		var div=document.createElement('div');
-		div.style.fontSize='15px';
+		div.style.fontSize=val.newsData.info_size+'px';
 		div.style.letterSpacing='1.5px';
+		div.style.lineHeight=val.newsData.info_height;
+		div.style.color=val.newsData.info_color;
 		div.innerHTML=val.newsData.info;
 		a.appendChild(div);
 	}

@@ -255,7 +255,6 @@ module.exports = {
         debug("创建完空订单时，查询这个用户的推荐码错误");
         cb("error");
       } else {
-
         async.auto({
           a: function (cbr) {
             otherEmp.updateSumbitTime([new Date().toLocaleString(), channel_id], (err, retr) => {
@@ -1221,26 +1220,27 @@ module.exports = {
     let appli_id = body.appli_id;
     appli_id = addZero(appli_id);
     let appliTime = new Date();
-    otherOrder.getBigOrder_id((err, ret1) => {
-      if (err) {
-        debug("获取订单最大id出现错误");
-        cb("error");
-      } else {
-        let keys = Object.keys(ret1[0]);
-        let order_id = ret1[0][keys[0]];
-        otherOrder.createEmptyOrder(
-          [++order_id, appli_id, appliTime, order_type],
-          (err, ret2) => {
-            if (err) {
-              debug("创建一个空订单出现错误");
-              cb("error");
-            } else {
-              cb(JSON.stringify({ data: ret2.insertId }));
-            }
-          }
-        );
+    // otherOrder.getBigOrder_id((err, ret1) => {
+    //   if (err) {
+    //     debug("获取订单最大id出现错误");
+    //     cb("error");
+    //   } else {
+    //     let keys = Object.keys(ret1[0]);
+    //     let order_id = ret1[0][keys[0]];
+    otherOrder.createEmptyOrder(
+      [appli_id, appliTime, order_type],
+      (err, ret2) => {
+        if (err) {
+          debug("创建一个空订单出现错误");
+          cb("error");
+        } else {
+          console.log(ret2.insertId);
+          cb(JSON.stringify({ data: ret2.insertId }));
+        }
       }
-    });
+    );
+    //   }
+    // });
   },
   /**
    * 传入创建流程所需要的数据

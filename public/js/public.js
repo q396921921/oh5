@@ -8,7 +8,7 @@ const excelFile = 'excelFile';
 
 var symbol = '\\';  // 这个是决定window系统\\与linux下的/的;
 
-const port = '1239';
+const port = '1238';
 var http = 'http://192.168.1.131:' + port + '/';
 
 const platform = 'window';

@@ -1,15 +1,3 @@
-
-// var socket_io = require('socket.io-client');
-// let socket = socket_io.connect('http://192.168.1.121:3333');
-
-// setTimeout(() => {
-//     let order_type = "1";
-//     socket.emit('createOrder', order_type);
-// }, 1000);
-
-// socket.on('getOrder_id', (data) => {
-//     console.log('我收到了服务器返回的订单id: ' + data.order_id);
-// })
 // let WebSocket = require('ws');
 // var ws = new WebSocket("ws://192.168.1.138:2222");
 // ws.onopen = function () {
@@ -27,3 +15,46 @@
 // // }
 
 
+
+
+
+// let writeStream = promise.promisify(function (path, chunk, cb) {
+//     const base64 = arrayBufferToBase64(chunk)
+//     console.log(base64);
+//     console.log(path);
+//     chunk = chunk.toString('base64');
+//     var writable = fs.createWriteStream(path, {
+//         flags: 'w',
+//         defaultEncoding: 'base64',
+//         mode: 0666,
+//     });
+
+//     writable.on('finish', function () {
+//         console.log('write finished');
+//         writable.end();
+//         cb(null)
+//         // process.exit(0);
+//     });
+//     writable.on('error', function (err) {
+//         console.log('write error - %s', err.message);
+//     });
+//     writable.write(base64, 'base64');
+// })
+function toBuffer(ab) {
+    let buf = new Buffer({ type: 'Buffer', data: Object.values(ab) })
+    return buf;
+}
+// function arrayBufferToBase64(buffer) {
+//     console.log(buffer);
+//     var binary = '';
+//     var bytes = new Uint8Array(buffer);
+//     console.log(bytes);
+//     var len = bytes.byteLength;
+//     for (var i = 0; i < len; i++) {
+//         binary += String.fromCharCode(bytes[i]);
+//     }
+//     return Window.btoa(binary);
+// }
+// // var buf = new Uint8Array([11,22,33]);
+// let a = arrayBufferToBase64([11,22,33]); //"CxYh"
+// console.log(a );

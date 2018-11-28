@@ -25,6 +25,11 @@ paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/
 <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <script src="respond.min.js"></script>
+<script>
+window.shuaxin=function(){
+	location.reload();
+}
+</script>
 </head>
 <body style="background-color:#CCC">
 <div id="All" class="gridContainer clearfix">
@@ -41,7 +46,7 @@ paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/
 </div>
 </body>
 <script type="text/javascript">
-var url='http://192.168.1.238:1239';
+var url='http://oh5.daotongkeji.com';
 var a=document.getElementById('All');
 var xhr = new XMLHttpRequest();
 	xhr.onreadystatechange = function () {
@@ -52,7 +57,7 @@ var xhr = new XMLHttpRequest();
 			CreatNew(response);
 		}
 	};
-	xhr.open("POST",url+"/head/getNews", true);
+	xhr.open("POST",url+"/users/getNews", true);
 	xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 	xhr.send(); 
 function CreatNew(val){
@@ -67,8 +72,7 @@ function CreatNew(val){
 	}
 }
 var selectnew=function(){
-	console.log('选中新闻id'+this.id);
-	document.location = 'tococos://id='+this.id;
+	document.location = 'newid://'+this.id;
 }
 function new1(mes){
  mes.title=JSON.parse(mes.title);

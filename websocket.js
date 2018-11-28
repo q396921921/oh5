@@ -6,11 +6,14 @@ var request = require('request');
 var async = require('async');
 var pathUrl = require('path');
 var UUID = require('uuid');
+var promise = require('bluebird');
 var debug = require('debug')('app:server');
 
 var public = require("./public/public");
 var path = public.path2;
 var symbol = public.symbol;
+
+var method = {};
 
 // 此方法开启长连接服务器，只需要在任意js文件调用即可
 websocket.getSocketio = function (port) {
@@ -43,7 +46,7 @@ websocket.getSocketio = function (port) {
     let fileUrl = pathUrl.join(__dirname, '/public/' + public.userfile)
     wss.on('connection', function (ws) {
         console.log('用户连接成功');
-        var arr = [];
+        var imgCounts = 1;
         let order_arr = [];
         let filesPath = "";
 
@@ -53,9 +56,7 @@ websocket.getSocketio = function (port) {
             if (typeof (message) == 'string') {
                 message = JSON.parse(message)
             }
-
             let event = message.event;
-
             if (event == 'dataOver') {
                 let order_id = message.or_id;
                 // 获取商品id，以此获得他所对应的流程
@@ -77,6 +78,7 @@ websocket.getSocketio = function (port) {
                                         request({ url: public.otherpath + '/management/creatChatroom', method: "post", body: { order_id: order_id }, json: true }, (err, res, body) => {
                                             if (err) {
                                                 console.log(err);
+
                                             } else {
                                                 // 如果返回success的话证明这个订单的状态创建好了
                                                 if (body == 'success') {
@@ -106,68 +108,49 @@ websocket.getSocketio = function (port) {
                     }
                 })
             }
-
-            if (event == 'imgOver') {
-                let order_id = message.or_id;
-                let tel = message.tel;
-                var buf = {
-                    type: 'Buffer',
-                    data: arr
-                }
-                arr = [];
-                buf = new Buffer(buf);
-                let userPath = pathUrl.join(fileUrl, symbol + tel);
-                let orderPath = pathUrl.join(userPath, symbol + order_id);
-                let ID = UUID.v1();
-                let filePath = pathUrl.join(orderPath, symbol + ID + '.jpg');
-                // 这里需要修改
-                let realPath = orderPath.split(public.userfile + symbol)[1];
-
-                filesPath += realPath + symbol + ID + '.jpg;';
-
-                // 如果存在这个用户的文件夹，不创建否则创建。
-                if (fs.existsSync(userPath)) {
-                    if (fs.existsSync(orderPath)) {
-                        fs.writeFile(filePath, buf, { encoding: 'utf8' }, (err) => {
-                            if (err) throw err
-                            else {
-                                console.log('传完一张图片');
-                                ws.send(JSON.stringify({ 'event': 'imgOver' }))
-                            }
-                        })
-                    } else {
-                        fs.mkdirSync(orderPath);
-                        fs.writeFile(filePath, buf, { encoding: 'utf8' }, (err) => {
-                            if (err) throw err
-                            else {
-                                console.log('传完一张图片');
-                                ws.send(JSON.stringify({ 'event': 'imgOver' }))
-                            }
-                        })
-                    }
-                } else {
-                    fs.mkdirSync(userPath);
-                    fs.mkdirSync(orderPath);
-                    fs.writeFile(filePath, buf, { encoding: 'utf8' }, (err) => {
-                        if (err) throw err
-                        else {
-                            console.log('传完一张图片');
-                            ws.send(JSON.stringify({ 'event': 'imgOver' }))
-                        }
-                    })
-                }
-            }
             if (event == 'imgs') {
                 let data = message.data;
-                // let aaa = data.replace('[', '');
-                // aaa = aaa.replace(']', '')
-                // aaa = aaa.replace(/"/g, '')
-                // aaa = aaa.split(',');
-                // let b = [];
-                // for (let i = 0; i < aaa.length; i++) {
-                //     b.push(parseInt(aaa[i]))
-                // }
-                arr = arr.concat(data);
+                let order_id = message.or_id;
+                let tel = message.tel;
+                (async function () {
+                    try {
+                        for (let i = 0; i < data.length; i++) {
+                            const val = data[i];
+                            let arrr = Object.values(val);
+                            let buf = new Uint8Array(arrr);
+                            let userPath = pathUrl.join(fileUrl, symbol + tel);
+                            let orderPath = pathUrl.join(userPath, symbol + order_id);
+                            let ID = UUID.v1();
+                            let filePath = pathUrl.join(orderPath, symbol + ID + '.jpg');
+                            // 这里需要修改
+                            let realPath = orderPath.split(public.userfile + symbol)[1];
+
+                            filesPath += realPath + symbol + ID + '.jpg;';
+                            let flag1 = await method.exists(userPath);
+                            if (flag1) {
+                                // 如果存在这个用户的文件夹，不创建否则创建。
+                                let flag2 = await method.exists(orderPath);
+                                if (flag2) {
+                                    await method.writeFile(filePath, buf);
+                                    ws.send(JSON.stringify({ 'event': 'imgOver', 'imgCounts': imgCounts }))
+                                } else {
+                                    await method.mkdir(orderPath);
+                                    await method.writeFile(filePath, buf);
+                                    ws.send(JSON.stringify({ 'event': 'imgOver', 'imgCounts': imgCounts }))
+                                }
+                            } else {
+                                await method.mkdir(userPath);
+                                await method.mkdir(orderPath);
+                                await method.writeFile(filePath, buf);
+                                ws.send(JSON.stringify({ 'event': 'imgOver', 'imgCounts': imgCounts }))
+                            }
+                            imgCounts++;
+                        }
+                        imgCounts == 1;
+                    } catch (err) {
+                        ws.send(JSON.stringify({ 'event': 'error', 'msg': '传图片时服务器出现错误' }))
+                    }
+                })()
             }
             if (event == 'createOrder') {
                 let order_type = message.order_type;
@@ -217,3 +200,29 @@ websocket.getSocketio = function (port) {
 }
 
 module.exports = websocket;
+
+// 查看是否有这个路径的同步方法
+method.exists = promise.promisify(function (path, cb) {
+    fs.exists(path, (flag) => {
+        cb(null, flag);
+    })
+})
+method.mkdir = promise.promisify(function (path, cb) {
+    fs.mkdir(path, (err) => {
+        if (err) {
+            cb(null)
+        } else {
+            cb(null, true)
+        }
+    })
+})
+method.writeFile = promise.promisify(function (filePath, buf, cb) {
+    fs.writeFile(filePath, buf, { encoding: 'utf8' }, (err) => {
+        if (err) {
+            console.log(err);
+            cb('error')
+        } else {
+            cb(null);
+        }
+    })
+})

@@ -240,7 +240,7 @@ module.exports = {
      * 无须传入东西，创建一个空订单，得到订单id，返回给前端
      */
     createEmptyOrder: function (arr, callback) {
-        let sql = 'insert into order2 (order_id,appli_id,appliTime,order_type) values (?,?,?,?)';
+        let sql = 'insert into order2 (appli_id,appliTime,order_type) values (?,?,?)';
         get.getData(sql, arr, callback);
     },
     /**
