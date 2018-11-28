@@ -132,20 +132,18 @@ websocket.getSocketio = function (port) {
                                 let flag2 = await method.exists(orderPath);
                                 if (flag2) {
                                     await method.writeFile(filePath, buf);
-                                    ws.send(JSON.stringify({ 'event': 'imgOver', 'imgCounts': imgCounts }))
                                 } else {
                                     await method.mkdir(orderPath);
                                     await method.writeFile(filePath, buf);
-                                    ws.send(JSON.stringify({ 'event': 'imgOver', 'imgCounts': imgCounts }))
                                 }
                             } else {
                                 await method.mkdir(userPath);
                                 await method.mkdir(orderPath);
                                 await method.writeFile(filePath, buf);
-                                ws.send(JSON.stringify({ 'event': 'imgOver', 'imgCounts': imgCounts }))
                             }
                             imgCounts++;
                         }
+                        ws.send(JSON.stringify({ 'event': 'imgOver', 'imgCounts': imgCounts }))
                         imgCounts == 1;
                     } catch (err) {
                         ws.send(JSON.stringify({ 'event': 'error', 'msg': '传图片时服务器出现错误' }))
