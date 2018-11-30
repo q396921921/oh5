@@ -91,9 +91,9 @@ module.exports = {
         let limit = otjs.limit;
         let sql = "";
         if (arr[0]) {
-            sql = 'select * from news where new_id=? order by time desc';
+            sql = 'select * from news where new_id=? order by new_id desc';
         } else {
-            sql = 'select * from news order by time desc';
+            sql = 'select * from news order by new_id desc';
         }
         if (limit && limit != '') {
             sql += ' limit ' + (limit - 1) * 15 + ',15';

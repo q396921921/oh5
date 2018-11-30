@@ -116,7 +116,7 @@ function daleteNew(t) {
 }
 // 修改一条新闻
 function updateNew(t) {
-    let title, time, title2, newsData, imgPath, ret;
+    let title, time, title2, newsData, imgPath, imgPath2, ret;
     $(t).parent().parent().children().children().each(function () {
         let name = $(this).attr('name');
         switch (name) {
@@ -133,7 +133,8 @@ function updateNew(t) {
         }
     })
     imgPath = ret.imgPath
-    imgDisplay(imgPath)
+    imgPath2 = ret.imgPath2; // 标题图片
+    imgDisplay(imgPath, imgPath2);
     title = JSON.parse(ret.title);
     title2 = JSON.parse(ret.title2);
     newsData = JSON.parse(ret.newsData);
@@ -170,14 +171,18 @@ function selectNew(t) {
 }
 function imgDisplay(imgPath, imgPath2) {
     imgPath = imgPath.split(';');
-    imgPath2 = imgPath2.split(';');
+    if (imgPath2) {
+        imgPath2 = imgPath2.split(';');
+    }
     let count = 0;
     $("div img").each(function () {
         if (count <= 2) {
-            for (let i = 0; i < imgPath2.length; i++) {
-                const src = imgPath2[i];
-                if (i == count) {
-                    $(this).attr('src', '/upload/' + src);
+            if (imgPath2) {
+                for (let i = 0; i < imgPath2.length; i++) {
+                    const src = imgPath2[i];
+                    if (i == count) {
+                        $(this).attr('src', '/upload/' + src);
+                    }
                 }
             }
         } else if (count > 2) {

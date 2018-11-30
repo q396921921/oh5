@@ -135,12 +135,16 @@ module.exports = {
             } else {
                 let fileStrAgo = ret[0].imgPath;
                 let fileStrAgo2 = ret[0].imgPath2;
-                console.log(fileStrAgo);
-                console.log(fileStrAgo2);
-
-                fileStrAgo = fileStrAgo.split(';');
-                fileStrAgo2 = fileStrAgo2.split(';');
-
+                if (fileStrAgo) {
+                    fileStrAgo = fileStrAgo.split(';');
+                } else {
+                    fileStrAgo = [];
+                }
+                if (fileStrAgo2) {
+                    fileStrAgo2 = fileStrAgo2.split(';');
+                } else {
+                    fileStrAgo2 = [];
+                }
                 // 将数据库与所有图片路径，其中这次被替换了的，进行替换。并将以前的删除
                 let count = 0;
                 let count2 = 0;
@@ -148,13 +152,13 @@ module.exports = {
                     const num = isUpdate[i];
                     if (num == 1) {
                         if (i <= 2) {
-                            if (fileStrAgo2[count2]) {
+                            if (fileStrAgo2 && fileStrAgo2[count2]) {
                                 deleteFile(fileStrAgo2[count2])
                             }
                             fileStrAgo2[count2] = files[count2].path.split(public.uploadFolde + symbol)[1];
                             count2++;
                         } else if (i > 2) {
-                            if (fileStrAgo[count]) {
+                            if (fileStrAgo && fileStrAgo[count]) {
                                 deleteFile(fileStrAgo[count])
                             }
                             fileStrAgo[count] = files[count].path.split(public.uploadFolde + symbol)[1];
@@ -168,20 +172,22 @@ module.exports = {
                         }
                     }
                 }
-                for (let i = 0; i < fileStrAgo.length; i++) {
-                    const file = fileStrAgo[i];
-                    if (file) {
-                        imgPath += file + ';';
+                if (fileStrAgo) {
+                    for (let i = 0; i < fileStrAgo.length; i++) {
+                        const file = fileStrAgo[i];
+                        if (file) {
+                            imgPath += file + ';';
+                        }
                     }
                 }
-                for (let i = 0; i < fileStrAgo2.length; i++) {
-                    const file = fileStrAgo2[i];
-                    if (file) {
-                        imgPath2 += file + ';';
+                if (fileStrAgo2) {
+                    for (let i = 0; i < fileStrAgo2.length; i++) {
+                        const file = fileStrAgo2[i];
+                        if (file) {
+                            imgPath2 += file + ';';
+                        }
                     }
                 }
-                console.log(imgPath);
-                console.log(imgPath2);
                 let arr = [title, time, title2, newsData, imgPath, imgPath2, new_id];
                 otherData.updateNew(arr, (err, ret) => {
                     if (err) {
