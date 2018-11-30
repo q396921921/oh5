@@ -20,9 +20,6 @@ websocket.getSocketio = function (port) {
     var wss = new WebSocketServer(port);
     console.log(`端口为${port.port}的长连接服务器已开启`);
     var count = 1;
-    mdOrder.getProfit((ret) => {
-        count = JSON.parse(ret).data[0].count
-    })
     let t1 = new Date();
     let hours = 23 - t1.getHours();
     let minute = 59 - t1.getMinutes();
@@ -45,6 +42,7 @@ websocket.getSocketio = function (port) {
 
     let fileUrl = pathUrl.join(__dirname, '/public/' + public.userfile)
     wss.on('connection', function (ws) {
+        var wsState = true;
         console.log('用户连接成功');
         var imgCounts = 1;
         let order_arr = [];
@@ -86,7 +84,10 @@ websocket.getSocketio = function (port) {
                                                 }
                                             }
                                         })
-                                        ws.send(JSON.stringify({ 'event': 'orderOver' }));
+                                        console.log('我是申请订单');
+                                        if (wsState) {
+                                            ws.send(JSON.stringify({ 'event': 'orderOver' }));
+                                        }
                                     }
                                 })
                             } else if (order_type == 2) {
@@ -100,9 +101,15 @@ websocket.getSocketio = function (port) {
                                         }
                                     }
                                 })
-                                ws.send(JSON.stringify({ 'event': 'orderOver' }));
+                                console.log('我是询值订单');
+                                if (wsState) {
+                                    ws.send(JSON.stringify({ 'event': 'orderOver' }));
+                                }
                             } else {
-                                ws.send(JSON.stringify({ 'event': 'orderOver' }));
+                                console.log('我是推荐的订单');
+                                if (wsState) {
+                                    ws.send(JSON.stringify({ 'event': 'orderOver' }));
+                                }
                             }
                         }
                     }
@@ -112,115 +119,91 @@ websocket.getSocketio = function (port) {
                 let data = message.data;
                 let order_id = message.or_id;
                 let tel = message.tel;
-                (async function () {
-                    try {
-                        for (let i = 0; i < data.length; i++) {
-                            const val = data[i];
-                            let arrr = Object.values(val);
-                            let buf = new Uint8Array(arrr);
-                            let userPath = pathUrl.join(fileUrl, symbol + tel);
-                            let orderPath = pathUrl.join(userPath, symbol + order_id);
-                            let ID = UUID.v1();
-                            let filePath = pathUrl.join(orderPath, symbol + ID + '.jpg');
-                            // 这里需要修改
-                            let realPath = orderPath.split(public.userfile + symbol)[1];
+                async.each(data, function (val, cb) {
+                    let arrr = Object.values(val);
+                    let buf = new Uint8Array(arrr);
 
-                            filesPath += realPath + symbol + ID + '.jpg;';
-                            let flag1 = await method.exists(userPath);
-                            if (flag1) {
-                                // 如果存在这个用户的文件夹，不创建否则创建。
-                                let flag2 = await method.exists(orderPath);
-                                if (flag2) {
-                                    await method.writeFile(filePath, buf);
-                                } else {
-                                    await method.mkdir(orderPath);
-                                    await method.writeFile(filePath, buf);
+                    let userPath = pathUrl.join(fileUrl, symbol + tel);
+                    let orderPath = pathUrl.join(userPath, symbol + order_id);
+                    let ID = UUID.v1();
+                    let filePath = pathUrl.join(orderPath, symbol + ID + '.jpg');
+                    // 这里需要修改
+                    let realPath = orderPath.split(public.userfile + symbol)[1];
+
+                    filesPath += realPath + symbol + ID + '.jpg;';
+                    if (fs.existsSync(userPath)) {
+                        if (fs.existsSync(orderPath)) {
+                            fs.writeFile(filePath, buf, { encoding: 'utf8' }, (err) => {
+                                if (err) throw err
+                                else {
+                                    cb();
                                 }
-                            } else {
-                                await method.mkdir(userPath);
-                                await method.mkdir(orderPath);
-                                await method.writeFile(filePath, buf);
-                            }
-                            imgCounts++;
+                            })
+                        } else {
+                            fs.mkdirSync(orderPath);
+                            fs.writeFile(filePath, buf, { encoding: 'utf8' }, (err) => {
+                                if (err) throw err
+                                else {
+                                    debug('传完一张图片');
+                                    cb();
+                                }
+                            })
                         }
-                        ws.send(JSON.stringify({ 'event': 'imgOver', 'imgCounts': imgCounts }))
-                        imgCounts == 1;
-                    } catch (err) {
-                        ws.send(JSON.stringify({ 'event': 'error', 'msg': '传图片时服务器出现错误' }))
-                    }
-                })()
-            }
-            if (event == 'createOrder') {
-                let order_type = message.order_type;
-                request({ url: path + 'createOrder', method: "post", body: { order_type: order_type, appli_id: count++ }, json: true }, (err, res, body) => {
-                    if (err) {
-                        console.log(err);
                     } else {
-                        mdOrder.setCount({ "count": count }, (err, ret) => {
-                            if (ret != 'success') {
-                                debug('订单尾号赋值失败');
-                                debug('此时订单尾号值为:' + count);
+                        fs.mkdirSync(userPath);
+                        fs.mkdirSync(orderPath);
+                        fs.writeFile(filePath, buf, { encoding: 'utf8' }, (err) => {
+                            if (err) throw err
+                            else {
+                                debug('传完一张图片');
+                                cb();
                             }
                         })
-                        let order_id = body.data
-                        let order_id_type = { order_id, order_type };
-                        // 将订单id以及订单类型传入总数组中
-                        order_arr.push(order_id_type);
-                        ws.send(JSON.stringify({ 'event': 'getOrder_id', 'order_id': order_id }));
                     }
+                }, function (err) {
+                    if (wsState) {
+                        ws.send(JSON.stringify({ 'event': 'imgOver' }))
+                    }
+                })
+            }
+            if (event == 'createOrder') {
+                mdOrder.getProfit((ret) => {
+                    count = JSON.parse(ret).data[0].count
+                    console.log(count);
+                    let order_type = message.order_type;
+                    request({ url: path + 'createOrder', method: "post", body: { order_type: order_type, appli_id: count++ }, json: true }, (err, res, body) => {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            mdOrder.setCount({ "count": count }, (err, ret) => {
+                                if (ret != 'success') {
+                                    debug('订单尾号赋值失败');
+                                    debug('此时订单尾号值为:' + count);
+                                }
+                            })
+                            let order_id = body.data
+                            let order_id_type = { order_id, order_type };
+                            // 将订单id以及订单类型传入总数组中
+                            order_arr.push(order_id_type);
+                            if (wsState) {
+                                ws.send(JSON.stringify({ 'event': 'getOrder_id', 'order_id': order_id }));
+                            }
+                        }
+                    })
                 })
             }
         });
 
         // 用户断开连接的时候触发此事件
         ws.on('close', function (close) {
-            debug('我关闭了');
+            wsState = false;
+            console.log('长连接关闭了,创建了订单id', order_arr);
             if (order_arr.length != 0) {
                 order_arr = JSON.stringify(order_arr);
-                request({ url: path + 'deleteOrder', method: 'post', body: { order_arr: order_arr }, json: true }, (err, res, body) => {
-                    if (err) {
-                        console.log(err);
-                    } else {
-                        if (body != 'error') {
-                            count = count - parseInt(body);
-                            mdOrder.setCount({ "count": count }, (err, ret) => {
-                                if (ret != 'success') {
-                                    console.log('订单尾号赋值失败');
-                                    console.log('此时订单尾号值为:' + count);
-                                }
-                            })
-                        }
-                    }
-                })
+                request({ url: path + 'deleteOrder', method: 'post', body: { order_arr: order_arr, count: count }, json: true }, (err, res, body) => { })
             }
         });
     });
 }
 
 module.exports = websocket;
-
-// 查看是否有这个路径的同步方法
-method.exists = promise.promisify(function (path, cb) {
-    fs.exists(path, (flag) => {
-        cb(null, flag);
-    })
-})
-method.mkdir = promise.promisify(function (path, cb) {
-    fs.mkdir(path, (err) => {
-        if (err) {
-            cb(null)
-        } else {
-            cb(null, true)
-        }
-    })
-})
-method.writeFile = promise.promisify(function (filePath, buf, cb) {
-    fs.writeFile(filePath, buf, { encoding: 'utf8' }, (err) => {
-        if (err) {
-            console.log(err);
-            cb('error')
-        } else {
-            cb(null);
-        }
-    })
-})

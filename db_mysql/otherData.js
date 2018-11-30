@@ -81,7 +81,7 @@ module.exports = {
      * 增加一条新闻
      */
     insertNew: function (arr, callback) {
-        let sql = 'insert into news (title,time,title2,newsData,imgPath) values (?,?,?,?,?)';
+        let sql = 'insert into news (title,time,title2,newsData,imgPath,imgPath2) values (?,?,?,?,?,?)';
         get.getData(sql, arr, callback);
     },
     /**
@@ -104,7 +104,7 @@ module.exports = {
      * 修改一条新闻
      */
     updateNew: function (arr, callback) {
-        let sql = 'update news set title=?,time=?,title2=?,newsData=?,imgPath=? where new_id=?';
+        let sql = 'update news set title=?,time=?,title2=?,newsData=?,imgPath=?,imgPath2=? where new_id=?';
         get.getData(sql, arr, callback);
     },
     /**

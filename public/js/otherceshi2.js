@@ -141,7 +141,7 @@ function updateNew(t) {
 }
 // 查看一条新闻
 function selectNew(t) {
-    let new_id, title, time, title2, newsData, imgPath, ret;
+    let new_id, title, time, title2, newsData, imgPath, imgPath2, ret;
     $(t).parent().parent().children().children().each(function () {
         let name = $(this).attr('name');
         switch (name) {
@@ -157,8 +157,9 @@ function selectNew(t) {
                 break;
         }
     })
-    imgPath = ret.imgPath
-    imgDisplay(imgPath);
+    imgPath = ret.imgPath;  // 内容图片
+    imgPath2 = ret.imgPath2; // 标题图片
+    imgDisplay(imgPath, imgPath2);
     $("div img").each(function () {
         $(this).prop("onclick", null).off("click");
     })
@@ -167,18 +168,28 @@ function selectNew(t) {
     newsData = JSON.parse(ret.newsData);
     setNewsData("select", title, time, title2, newsData);
 }
-function imgDisplay(imgPath) {
+function imgDisplay(imgPath, imgPath2) {
     imgPath = imgPath.split(';');
-    for (let i = 0; i < imgPath.length; i++) {
-        const src = imgPath[i];
-        let count = 0;
-        $("div img").each(function () {
-            if (i == count) {
-                $(this).attr('src', '/upload/' + src);
+    imgPath2 = imgPath2.split(';');
+    let count = 0;
+    $("div img").each(function () {
+        if (count <= 2) {
+            for (let i = 0; i < imgPath2.length; i++) {
+                const src = imgPath2[i];
+                if (i == count) {
+                    $(this).attr('src', '/upload/' + src);
+                }
             }
-            count++;
-        })
-    }
+        } else if (count > 2) {
+            for (let i = 0; i < imgPath.length; i++) {
+                const src = imgPath[i];
+                if ((i + 3) == count) {
+                    $(this).attr('src', '/upload/' + src);
+                }
+            }
+        }
+        count++;
+    })
 }
 function setNewsData(tag, title, time, title2, newsData) {
     $("#split").hide();

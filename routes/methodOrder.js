@@ -355,6 +355,8 @@ module.exports = {
    */
   deleteOrderById: function (body, cb) {
     let order_arr = body.order_arr;
+    let counts = body.count;
+    let t = this;
     order_arr = JSON.parse(order_arr);
     let count = 0; // 删除了几个订单
     async.each(
@@ -391,6 +393,7 @@ module.exports = {
                       debug("删除空订单时出现错误");
                       cb("error");
                     } else {
+                      console.log('删除id为：' + order_id + '的订单成功');
                       count++;
                       cb2();
                     }
@@ -406,6 +409,7 @@ module.exports = {
                       debug("删除空订单时出现错误");
                       cb("error");
                     } else {
+                      console.log('删除id为：' + order_id + '的订单成功');
                       count++;
                       cb2();
                     }
@@ -421,6 +425,7 @@ module.exports = {
                       debug("删除空订单时出现错误");
                       cb("error");
                     } else {
+                      console.log('删除id为：' + order_id + '的订单成功');
                       count++;
                       cb2();
                     }
@@ -432,7 +437,15 @@ module.exports = {
         });
       },
       function (err) {
-        cb(count.toString());
+        counts = counts - count;
+        t.setCount({ "count": counts }, (err, ret) => {
+          if (ret != 'success') {
+            console.log('订单尾号赋值失败');
+            console.log('此时订单尾号值为:' + counts);
+          } else {
+            console.log('为total_profit表的count赋值成功尾号为：' + counts)
+          }
+        })
       }
     );
   },

@@ -127,32 +127,62 @@ module.exports = {
         let time = body.time;
         let isUpdate = body.isUpdate;
         let files = req.files;
-        let fileStr = "";
+        let imgPath = "";
+        let imgPath2 = "";
         otherData.getNews("", [new_id], (err, ret) => {
             if (err) {
                 cb('error');
             } else {
                 let fileStrAgo = ret[0].imgPath;
+                let fileStrAgo2 = ret[0].imgPath2;
+                console.log(fileStrAgo);
+                console.log(fileStrAgo2);
+
                 fileStrAgo = fileStrAgo.split(';');
+                fileStrAgo2 = fileStrAgo2.split(';');
+
                 // 将数据库与所有图片路径，其中这次被替换了的，进行替换。并将以前的删除
                 let count = 0;
+                let count2 = 0;
                 for (let i = 0; i < isUpdate.length; i++) {
                     const num = isUpdate[i];
                     if (num == 1) {
-                        if (fileStrAgo[i]) {
-                            deleteFile(fileStrAgo[i])
+                        if (i <= 2) {
+                            if (fileStrAgo2[count2]) {
+                                deleteFile(fileStrAgo2[count2])
+                            }
+                            fileStrAgo2[count2] = files[count2].path.split(public.uploadFolde + symbol)[1];
+                            count2++;
+                        } else if (i > 2) {
+                            if (fileStrAgo[count]) {
+                                deleteFile(fileStrAgo[count])
+                            }
+                            fileStrAgo[count] = files[count].path.split(public.uploadFolde + symbol)[1];
+                            count++;
                         }
-                        fileStrAgo[i] = files[count].path.split(public.uploadFolde + symbol)[1];
-                        count++;
+                    } else {
+                        if (i <= 2) {
+                            count2++;
+                        } else if (i > 2) {
+                            count++;
+                        }
                     }
                 }
                 for (let i = 0; i < fileStrAgo.length; i++) {
                     const file = fileStrAgo[i];
                     if (file) {
-                        fileStr += file + ';';
+                        imgPath += file + ';';
                     }
                 }
-                let arr = [title, time, title2, newsData, fileStr, new_id];
+                for (let i = 0; i < fileStrAgo2.length; i++) {
+                    const file = fileStrAgo2[i];
+                    if (file) {
+                        imgPath2 += file + ';';
+                    }
+                }
+                console.log(imgPath);
+                console.log(imgPath2);
+                let arr = [title, time, title2, newsData, imgPath, imgPath2, new_id];
                 otherData.updateNew(arr, (err, ret) => {
                     if (err) {
                         console.log(err);
@@ -179,7 +209,6 @@ module.exports = {
             if (err) {
                 cb('error')
             } else {
-                console.log(ret);
                 cb(JSON.stringify({ data: ret }));
             }
         })
@@ -192,15 +221,26 @@ module.exports = {
         let title = JSON.stringify(body.title);
         let title2 = JSON.stringify(body.title2);
         let newsData = JSON.stringify(body.newsData);
+        let isUpdate = body.isUpdate;
         let time = body.time;
         let files = req.files;
-        let fileStr = "";
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            let filePath = file.path.split(public.uploadFolde + symbol)[1];
-            fileStr += filePath + ';';
+        let imgPath = "";
+        let imgPath2 = "";
+        let count = 0;
+        for (let i = 0; i < isUpdate.length; i++) {
+            const num = isUpdate[i];
+            if (num == 1) {
+                let file = files[count];
+                let filePath = file.path.split(public.uploadFolde + symbol)[1];
+                if (i <= 2) {
+                    imgPath2 += filePath + ';';
+                } else {
+                    imgPath += filePath + ';';
+                }
+                count++;
+            }
         }
-        let arr = [title, time, title2, newsData, fileStr];
+        let arr = [title, time, title2, newsData, imgPath, imgPath2];
         otherData.insertNew(arr, (err, ret) => {
             if (err) {
                 console.log(err);
