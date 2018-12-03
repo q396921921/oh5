@@ -418,6 +418,9 @@ function text2() {
     $("#table2 input").each(function () {
         let name = $(this).attr('name');
         $(this).removeAttr('readonly');
+        if (name == 'color') {
+            $(this).removeAttr('disabled')
+        }
         switch (name) {
             // 申请状态与流程状态权限
             case 'order_state':
@@ -791,6 +794,7 @@ function printTable(result, tableId) {
         let interest = Math.floor(data.interest * 1000) / 1000;
         let call_message = getAny(data.call_message);
         let refund_date = getAny(data.refund_date);
+        let color = getAny(data.color);
         $("#failReason").val(failReason);
         trtd += '<tr><td hidden><input type="text" name="order_id" value="' + data.order_id + '" style="width: 95%"></td>'
             + '<td hidden><input type="text" name="failReason" value="' + failReason + '" style="width: 95%"></td>'
@@ -829,6 +833,7 @@ function printTable(result, tableId) {
             + '<td><input type="text" name="loanTime" value="' + loanTime + '" readonly="readonly"></td>'
             + '<td hidden><input type="text" name="orderFile" value="' + orderFile + '"></td>'
             + '<td><input type="text" name="order_state" value="' + order_state + '" style="width: 97%"><input type="text" value="' + 1 + '" hidden></td>'
+            + '<td><input type="color" name="color" value="' + color + '" disabled></td>'
             + '<td><input onclick="getOneOrders(this)" type="button" name="handle" value="详情" style="width: 50px">'
             + deleteKey + '</td></tr>';
     }
@@ -904,6 +909,9 @@ function getOneOrders(t) {
                 $(this).val(val);
                 // 将所有的input框设置为只读
                 $(this).attr('readonly', 'readonly')
+                if (name2 == 'color') {
+                    $(this).attr('disabled', 'disabled')
+                }
                 switch (name2) {
                     case 'userComment':
                         if (r14) {

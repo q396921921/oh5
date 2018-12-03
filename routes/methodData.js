@@ -148,6 +148,7 @@ module.exports = {
                 // 将数据库与所有图片路径，其中这次被替换了的，进行替换。并将以前的删除
                 let count = 0;
                 let count2 = 0;
+                let count3 = 0;
                 for (let i = 0; i < isUpdate.length; i++) {
                     const num = isUpdate[i];
                     if (num == 1) {
@@ -155,15 +156,16 @@ module.exports = {
                             if (fileStrAgo2 && fileStrAgo2[count2]) {
                                 deleteFile(fileStrAgo2[count2])
                             }
-                            fileStrAgo2[count2] = files[count2].path.split(public.uploadFolde + symbol)[1];
+                            fileStrAgo2[count2] = files[count3].path.split(public.uploadFolde + symbol)[1];
                             count2++;
                         } else if (i > 2) {
                             if (fileStrAgo && fileStrAgo[count]) {
                                 deleteFile(fileStrAgo[count])
                             }
-                            fileStrAgo[count] = files[count].path.split(public.uploadFolde + symbol)[1];
+                            fileStrAgo[count] = files[count3].path.split(public.uploadFolde + symbol)[1];
                             count++;
                         }
+                        count3++;
                     } else {
                         if (i <= 2) {
                             count2++;

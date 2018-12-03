@@ -6,7 +6,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>全部页面</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-    <META HTTP-EQUIV="Refresh" CONTENT="600">
     <link rel="stylesheet" href="/css/appliceshi1.css">
     <script src="/js/jquery.min.js"></script>
     <script src="/js/public.js"></script>
@@ -123,6 +122,7 @@
                 <th width="9%">申请时间</th>
                 <th width="9%">放款时间</th>
                 <th width="6%">订单状态</th>
+                <th width="3%">颜色</th>
                 <th width="8%">操作</th>
             </thead>
         </table>
@@ -171,7 +171,7 @@
                 <tr>
                     <td width="8%">申请时间</td>
                     <td>
-                        <input  type="datetime" name="appliTime">
+                        <input type="datetime" name="appliTime">
                     </td>
                     <td width="8%">下户时间(短信)</td>
                     <td>
@@ -227,8 +227,12 @@
                         <input type="text" name="call_message" onkeyup="this.value=this.value.toString().match(/^\d+(?:)?/)">
                     </td>
                     <td width="8%">还款日期</td>
-                    <td colspan="3">
+                    <td>
                         <input type="text" name="refund_date">
+                    </td>
+                    <td width="8%">备注颜色</td>
+                    <td>
+                        <input type="color" name="color">
                     </td>
                 </tr>
                 <tr>
