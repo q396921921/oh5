@@ -32,7 +32,7 @@ function removeGround(t) {
 
 // 跳转当前测试1页面，即管理与创建
 function jump(num) {
-    window.location.href = path + 'user/ceshi' + num + '?menu=' + num;
+    window.location.href =  '/users/user/ceshi' + num + '?menu=' + num;
 }
 
 
@@ -42,7 +42,7 @@ function jump(num) {
 function reverifg(username, password) {
     let flag = true;
     $.ajax({
-        url: path + "getUserByUserPass",
+        url: "/users/getUserByUserPass",
         type: "post",
         data: {
             username: username,
@@ -133,7 +133,7 @@ function submit() {
 // 提交表达当中的所有数据
 function submitForm(name, repassword, username, tel, exist) {
     $.ajax({
-        url: path + "updateUserInfo",
+        url: "/users/updateUserInfo",
         type: "post",
         data: {
             name: name,
@@ -150,7 +150,7 @@ function submitForm(name, repassword, username, tel, exist) {
                 if (exist) {
                     // 删除根目录下的username，cookie
                     $.cookie("username", '', { path: '/', expires: -1 });
-                    window.location.href = path + 'login';
+                    window.location.href =  '/users/login';
                 }
             } else {
                 alert('修改信息失败')
@@ -161,7 +161,7 @@ function submitForm(name, repassword, username, tel, exist) {
 // 通过传入用户名获得当前用户的角色，并判断是否为管理账户，如果是将框框打钩     ✔
 function getRole(username) {
     $.ajax({
-        url: path + "getRole",
+        url: "/users/getRole",
         type: "post",
         data: {
             username: username

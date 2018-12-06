@@ -1,7 +1,7 @@
 
 // 跳转当前测试1页面，即管理与创建
 function jump(num) {
-    window.location.href = path + 'other/ceshi' + num + '?menu=' + num;
+    window.location.href =  '/users/other/ceshi' + num + '?menu=' + num;
 }
 
 

@@ -31,7 +31,7 @@ function removeGround(t) {
 
 // 跳转当前测试1页面，即管理与创建
 function jump(num) {
-    window.location.href = path + 'dep/ceshi' + num + '?menu=' + num;
+    window.location.href =  '/users/dep/ceshi' + num + '?menu=' + num;
 }
 
 
@@ -54,7 +54,7 @@ function deleteDep(t) {
     let flag = confirmAct('您确认要删除此部门吗？');
     if (flag) {
         $.ajax({
-            url: path + "deleteDep",
+            url: "/users/deleteDep",
             type: "post",
             data: {
                 dep_id: dep_id
@@ -135,7 +135,7 @@ function detailDep(t) {
         }
     })
     $.ajax({
-        url: path + "getUser",
+        url: "/users/getUser",
         type: "post",
         data: {
             dep_id: dep_id,
@@ -197,7 +197,7 @@ function deleteEmp() {
         let flag = confirmAct('是否确认删除员工');
         if (flag) {
             $.ajax({
-                url: path + "deleteDepUser",
+                url: "/users/deleteDepUser",
                 type: "post",
                 data: {
                     emp_id_arr: emp_id_arr,
@@ -233,7 +233,7 @@ function getAllCheck() {
         if (flag) {
             let dep_id = $("#dep_id").val();
             $.ajax({
-                url: path + "allotUser",
+                url: "/users/allotUser",
                 type: "post",
                 data: {
                     emp_id_arr: emp_id_arr,
@@ -263,7 +263,7 @@ function getAllCheck() {
 // 获得所有未被分配的员工
 function getAllEmpNotAllot() {
     $.ajax({
-        url: path + "getAllEmpNotAllot",
+        url: "/users/getAllEmpNotAllot",
         type: "post",
         data: {
             type: 5
@@ -287,7 +287,7 @@ function getAllEmpNotAllot() {
 // 获得所有的经理账户
 function getAllManager() {
     $.ajax({
-        url: path + "getUser",
+        url: "/users/getUser",
         type: "post",
         data: {
             type: 3
@@ -310,7 +310,7 @@ function getAllManager() {
 // 获得所有的部门
 function getAllDep() {
     $.ajax({
-        url: path + "getAllDep",
+        url: "/users/getAllDep",
         type: "get",
         async: false,
         dataType: "text",
@@ -352,7 +352,7 @@ function getManagerName(emp_id) {
     let name = "";
     if (emp_id && emp_id != "") {
         $.ajax({
-            url: path + "getUser",
+            url: "/users/getUser",
             type: "post",
             data: {
                 emp_id: emp_id
@@ -383,7 +383,7 @@ function deleteManager(t) {
         let emp_id = $(t).prev().val();
         let dep_id = $("#dep_id").val();
         $.ajax({
-            url: path + "deleteManager",
+            url: "/users/deleteManager",
             type: "post",
             data: {
                 name: name,
@@ -410,7 +410,7 @@ function allotManager(t) {
         let dep_id = $("#dep_id").val();
         let name = $(t).attr('name');
         $.ajax({
-            url: path + "allotManager",
+            url: "/users/allotManager",
             type: "post",
             data: {
                 name: name,

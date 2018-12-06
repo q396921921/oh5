@@ -10,7 +10,7 @@ let emp_id;
 
 function getEmp() {
     $.ajax({
-        url: path + "getUser",
+        url: "/users/getUser",
         type: "post",
         data: {
             "username": username,
@@ -37,7 +37,7 @@ function getEmp() {
 // 获得所有权限
 function getPowerResource(id, type) {
     $.ajax({
-        url: path + "getResource",
+        url: "/users/getResource",
         type: "post",
         data: {
             id: id,

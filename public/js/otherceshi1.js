@@ -1,7 +1,7 @@
 // 获得资质表的信息,并将其打印到当前页面中
 function getzizhiInfo() {
     $.ajax({
-        url: path + "getzizhiInfo",
+        url: "/users/getzizhiInfo",
         type: "get",
         async: false,
         dataType: "text",
@@ -29,7 +29,7 @@ function getzizhiInfo() {
 // 获得首页表的信息,并将其打印到当前页面中
 function gethome_page() {
     $.ajax({
-        url: path + "gethome_page",
+        url: "/users/gethome_page",
         type: "get",
         async: false,
         dataType: "text",
@@ -119,7 +119,7 @@ function types(t) {
     s.next().empty();
     $('<option value="">----请选择----</option>').appendTo(s.next())
     $.ajax({
-        url: path + "getType",
+        url: "/users/getType",
         type: "get",
         async: false,
         dataType: "text",
@@ -140,7 +140,7 @@ function getProducts(t) {
     s.empty()
     let product_type_id = $(t).val();
     $.ajax({
-        url: path + "getProductsByTypeId",
+        url: "/users/getProductsByTypeId",
         type: "post",
         data: {
             product_type_id: product_type_id
@@ -180,7 +180,7 @@ function hiddenProduct(t) {
 // 获得业务合作伙伴表信息
 function getBusiness() {
     $.ajax({
-        url: path + "getbusiness",
+        url: "/users/getbusiness",
         type: "get",
         async: false,
         dataType: "text",
@@ -223,7 +223,7 @@ function getPartnerInfo2(t) {
     let twoLine = 1;
     let bus_id = $(t).val()
     $.ajax({
-        url: path + "getPartnerBankOrOrgan",
+        url: "/users/getPartnerBankOrOrgan",
         type: "post",
         data: {
             twoLine: twoLine,
@@ -265,7 +265,7 @@ function getPartnerInfo1(t) {
     // let bus_id = $('#business0 input[name="database_id"]').val();
     let bus_id = 1;
     $.ajax({
-        url: path + "getPartnerBankOrOrgan",
+        url: "/users/getPartnerBankOrOrgan",
         type: "post",
         data: {
             twoLine: twoLine,
@@ -304,7 +304,7 @@ function getPartnerInfo1(t) {
 function getPartnerDetail(t) {
     let partner_id = $(t).prev().prev().val();
     $.ajax({
-        url: path + "getPartnerBankOrOrgan",
+        url: "/users/getPartnerBankOrOrgan",
         type: "post",
         data: {
             partner_id: partner_id
@@ -395,7 +395,7 @@ function change(fileDom) {
 
 // 跳转当前测试1页面，即管理与创建
 function jump(num) {
-    window.location.href = path + 'other/ceshi' + num + '?menu=' + num;
+    window.location.href =  '/users/other/ceshi' + num + '?menu=' + num;
 }
 
 

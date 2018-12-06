@@ -127,7 +127,7 @@ function deleteOrders(t) {
     let flag = confirmAct('您确认要删除此订单吗');
     if (flag) {
         $.ajax({
-            url: path + "deleteOrder",
+            url: "/users/deleteOrder",
             type: "post",
             data: {
                 order_id: order_id
@@ -173,7 +173,7 @@ function getProduct(product_id) {
     let text = "";
     if (product_id) {
         $.ajax({
-            url: path + "getProductById",
+            url: "/users/getProductById",
             type: "post",
             data: {
                 product_id: product_id
@@ -194,7 +194,7 @@ function getTypeProduct(product_type_id) {
     let text = "";
     if (product_type_id) {
         $.ajax({
-            url: path + "getProductsByTypeId",
+            url: "/users/getProductsByTypeId",
             type: "post",
             data: {
                 product_type_id: product_type_id,
@@ -253,7 +253,7 @@ function getAny(data) {
 function getTypes() {
     var text = "";
     $.ajax({
-        url: path + "getType",
+        url: "/users/getType",
         type: "get",
         async: false,
         dataType: "text",
@@ -292,7 +292,7 @@ function download(name, href) {
 }
 // 跳转当前测试1页面，即全部与筛选
 function jump(num) {
-    window.location.href = path + 'appli/ceshi' + num + '?menu=' + num;
+    window.location.href =  '/users/appli/ceshi' + num + '?menu=' + num;
 }
 
 function getOneOrders(t) {
@@ -524,7 +524,7 @@ function setOrder_state(order_state, exist) {
     function abc() {
         let order_id = $("#order_id").val();
         $.ajax({
-            url: path + "setOrder_state2",
+            url: "/users/setOrder_state2",
             type: "post",
             data: {
                 order_state: order_state,
@@ -602,7 +602,7 @@ function submit(t) {
     function a(name, val) {
         let text = '';
         $.ajax({
-            url: path + "updateOrder",
+            url: "/users/updateOrder",
             type: "post",
             data: {
                 name: [name, val],
@@ -638,7 +638,7 @@ function getOrders(num) {
         data.role_type = 1;
     }
     $.ajax({
-        url: path + "getOrders",
+        url: "/users/getOrders",
         type: "post",
         data: data,
         async: false,
@@ -667,7 +667,7 @@ function getSplitPage(num, tableId) {
         data.role_type = 1;
     }
     $.ajax({
-        url: path + "getOrders",
+        url: "/users/getOrders",
         type: "post",
         data: data,
         async: false,
@@ -696,7 +696,7 @@ function output() {
         data.role_type = 1;
     }
     $.ajax({
-        url: path + "writeOrederExcel",
+        url: "/users/writeOrederExcel",
         type: "post",
         data: data,
         async: false,
@@ -714,7 +714,7 @@ function output() {
 function getAllProducts() {
     let text;
     $.ajax({
-        url: path + "getProductById",
+        url: "/users/getProductById",
         type: "post",
         data: {
             product_id: "",
@@ -745,7 +745,7 @@ function getPName(product_id) {
 function getAllEmpName(emp_id, dep_id, type) {
     let text;
     $.ajax({
-        url: path + "getEmpName",
+        url: "/users/getEmpName",
         type: "post",
         data: {
             emp_id: emp_id,

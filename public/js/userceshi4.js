@@ -32,7 +32,7 @@ function removeGround(t) {
 
 // 跳转当前测试1页面，即管理与创建
 function jump(num) {
-    window.location.href = path + 'user/ceshi' + num + '?menu=' + num;
+    window.location.href =  '/users/user/ceshi' + num + '?menu=' + num;
 }
 
 
@@ -40,7 +40,7 @@ function jump(num) {
 function getAllEmpName(emp_id, dep_id, type) {
     let text;
     $.ajax({
-        url: path + "getEmpName",
+        url: "/users/getEmpName",
         type: "post",
         data: {
             emp_id: emp_id,
@@ -77,7 +77,7 @@ function deleteTb() {
     $("#table tr:gt(0)").empty()
     let username = $("#aid").val()
     $.ajax({
-        url: path + "getUser",
+        url: "/users/getUser",
         type: "post",
         data: {
             username: username,
@@ -94,7 +94,7 @@ function deleteTb() {
 // 查询所有用户级别的账户
 function getUser6() {
     $.ajax({
-        url: path + "getUser6",
+        url: "/users/getUser6",
         type: "post",
         data: {
             type: 6
@@ -112,7 +112,7 @@ function getSplitPage() {
     $("#table tr:gt(0)").empty();
     let limit = $("#pageNo").val();
     $.ajax({
-        url: path + "getUser6",
+        url: "/users/getUser6",
         type: "post",
         data: {
             type: 6,
@@ -206,7 +206,7 @@ function updateUser6(t) {
     let iiuv = $(t).parent().parent().children().children('input[name="iiuv"]').val();
     if (iiuv > 100000 && iiuv < 1000000) {
         $.ajax({
-            url: path + "updateUser6",
+            url: "/users/updateUser6",
             type: "post",
             data: {
                 emp_id: emp_id,

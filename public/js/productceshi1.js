@@ -38,7 +38,7 @@ function deleteTb() {
     $("#table tbody").empty();
     let product_id = $("#aid").val();
     $.ajax({
-        url: path + "getProductById",
+        url: "/users/getProductById",
         type: "post",
         data: {
             product_id: product_id
@@ -65,7 +65,7 @@ function getType(type) {
 // 从数据库中取得当前所有的产品类型，并记录到当前网页
 function getTypes() {
     $.ajax({
-        url: path + "getType",
+        url: "/users/getType",
         type: "get",
         async: false,
         dataType: "text",
@@ -81,7 +81,7 @@ function getTypes() {
 }
 // 跳转当前测试1页面，即全部与筛选      ✔
 function jump(num) {
-    window.location.href = path + 'product/ceshi' + num + '?menu=' + num;
+    window.location.href =  '/users/product/ceshi' + num + '?menu=' + num;
 }
 
 // 二次确认框
@@ -113,7 +113,7 @@ function deletePt(t) {
     if (flag) {
         let product_id = $(t).parent().parent().children().children('input[name="product_id"]').val();
         $.ajax({
-            url: path + "deleteProduct",
+            url: "/users/deleteProduct",
             type: "post",
             data: {
                 product_id: product_id
@@ -218,7 +218,7 @@ function change(fileDom) {
 // 获得所有的流程id与名字
 function getFlows(t) {
     $.ajax({
-        url: path + "getFlowNameId",
+        url: "/users/getFlowNameId",
         type: "get",
         async: false,
         dataType: "text",
@@ -235,7 +235,7 @@ function getFlows(t) {
 // 获得所有的文件类型id与名字
 function getFile_type(t) {
     $.ajax({
-        url: path + "getFile_typeNameId",
+        url: "/users/getFile_typeNameId",
         type: "get",
         async: false,
         dataType: "text",
@@ -255,7 +255,7 @@ function getSortFlowState(t) {
     $(t).prev().val(flow_id);
     $("#flow_state tr:gt(0)").empty()
     $.ajax({
-        url: path + "getSortFlowState",
+        url: "/users/getSortFlowState",
         type: "post",
         data: {
             flow_id: flow_id
@@ -294,7 +294,7 @@ function getDetailFile_types(t) {
     $(t).prev().val(file_type_id)
     $("#file_type tr:gt(0)").empty();
     $.ajax({
-        url: path + "getDetailFile_types",
+        url: "/users/getDetailFile_types",
         type: "post",
         data: {
             file_type_id: file_type_id
@@ -325,7 +325,7 @@ function detailPt(t) {
         let attrName = $(this).attr('name');
         if (attrName == 'product_id') {
             $.ajax({
-                url: path + "getProductById",
+                url: "/users/getProductById",
                 type: "post",
                 data: {
                     product_id: $(this).val()
@@ -411,7 +411,7 @@ function setData(t) {
 function getScreenProduct() {
     let product_type_id = $("#types").val();
     $.ajax({
-        url: path + "getProductsByTypeId",
+        url: "/users/getProductsByTypeId",
         type: "post",
         data: {
             product_type_id: product_type_id,
@@ -430,7 +430,7 @@ function getSplitPage() {
     let limit = $("#pageNo").val();
     let product_type_id = $("#types").val();
     $.ajax({
-        url: path + "getProductsByTypeId",
+        url: "/users/getProductsByTypeId",
         type: "post",
         data: {
             product_type_id: product_type_id,

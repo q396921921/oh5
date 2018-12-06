@@ -31,7 +31,7 @@ function removeGround(t) {
 
 // 跳转当前测试1页面，即管理与创建
 function jump(num) {
-    window.location.href = path + 'dep/ceshi' + num + '?menu=' + num;
+    window.location.href =  '/users/dep/ceshi' + num + '?menu=' + num;
 }
 
 // 二次确认框
@@ -46,7 +46,7 @@ function createDep() {
     let flag = confirmAct('确认要创建部门吗？')
     if (flag) {
         $.ajax({
-            url: path + "createDep",
+            url: "/users/createDep",
             type: "post",
             data: {
                 managerName: managerName

@@ -53,7 +53,7 @@
         function getUsername(username) {
             if (username && username != "") {
                 $.ajax({
-                    url: path + "getUser",
+                    url: "/users/getUser",
                     type: "post",
                     data: {
                         username: username,
@@ -130,7 +130,7 @@
         function getNoHandleOrder(order_type) {
             let num = "";
             $.ajax({
-                url: path + "getNoHandleOrders",
+                url: "/users/getNoHandleOrders",
                 type: "post",
                 data: {
                     order_type: order_type,
@@ -149,7 +149,7 @@
         // 注销用户的方法
         function outUser() {
             $.ajax({
-                url: path + "outUser",
+                url: "/users/outUser",
                 type: "post",
                 data: {
                     "username": $('#username').val(),
@@ -159,14 +159,14 @@
                 success: function (result) {
                     if (result != 'error') {
                         $.cookie("username", '', { path: '/', expires: -1 });
-                        window.location.href = path + "login";
+                        window.location.href = "/login";
                     }
                 }
             })
         }
         function jump(num1, num2) {
-            console.log(path + 'main?state=' + num1 + '&menu=' + num2);
-            window.location.href = path + 'main?state=' + num1 + '&menu=' + num2
+            console.log( '/users/main?state=' + num1 + '&menu=' + num2);
+            window.location.href =  '/users/main?state=' + num1 + '&menu=' + num2
         }
 
         // 绑定按钮的三种事件

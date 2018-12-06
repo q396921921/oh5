@@ -51,7 +51,7 @@ function getType(type) {
 // 从数据库中取得当前所有的产品类型，并记录到当前网页
 function getTypes() {
     $.ajax({
-        url: path + "getType",
+        url: "/users/getType",
         type: "get",
         async: false,
         dataType: "text",
@@ -67,7 +67,7 @@ function getTypes() {
 }
 // 跳转当前测试1页面，即全部与筛选
 function jump(num) {
-    window.location.href = path + 'product/ceshi' + num + '?menu=' + num;
+    window.location.href =  '/users/product/ceshi' + num + '?menu=' + num;
 }
 
 // 表单用ajax进行提交，然后后台进行修改
@@ -170,7 +170,7 @@ function change(fileDom) {
 // 获得所有的流程id与名字
 function getFlows() {
     $.ajax({
-        url: path + "getFlowNameId",
+        url: "/users/getFlowNameId",
         type: "get",
         async: false,
         dataType: "text",
@@ -187,7 +187,7 @@ function getFlows() {
 // 获得所有的文件类型id与名字
 function getFile_type() {
     $.ajax({
-        url: path + "getFile_typeNameId",
+        url: "/users/getFile_typeNameId",
         type: "get",
         async: false,
         dataType: "text",

@@ -14,7 +14,7 @@ function getAllUsers() {
         $("#person").show();
         $("#message").hide();
         $.ajax({
-            url: path + "getUser6",
+            url: "/users/getUser6",
             type: "post",
             data: {
                 type: 6
@@ -39,7 +39,7 @@ function getAllUsers() {
 
 // 跳转当前测试1页面，即管理与创建
 function jump(num) {
-    window.location.href = path + 'other/ceshi' + num + '?menu=' + num;
+    window.location.href =  '/users/other/ceshi' + num + '?menu=' + num;
 }
 
 
@@ -50,7 +50,7 @@ function reSend() {
     let flag = confirmAct('是否确认发送公告？');
     if(flag) {
         $.ajax({
-                url: path + "sendMessage",
+                url: "/users/sendMessage",
                 type: "post",
                 data: {
                     title: title,

@@ -35,7 +35,7 @@ function deleteTb() {
     $("#table tbody").empty();
     let product_id = $("#aid").val();
     $.ajax({
-        url: path + "getProductById",
+        url: "/users/getProductById",
         type: "post",
         data: {
             product_id: product_id
@@ -50,7 +50,7 @@ function deleteTb() {
 }
 // 跳转当前测试1页面，即全部与筛选      ✔
 function jump(num) {
-    window.location.href = path + 'product/ceshi' + num + '?menu=' + num;
+    window.location.href =  '/users/product/ceshi' + num + '?menu=' + num;
 }
 
 // 二次确认框
@@ -82,7 +82,7 @@ function deletePt(t) {
     if (flag) {
         let product_id = $(t).parent().parent().children().children('input[name="product_id"]').val();
         $.ajax({
-            url: path + "deleteOffPro",
+            url: "/users/deleteOffPro",
             type: "post",
             data: {
                 product_id: product_id
@@ -110,7 +110,7 @@ function detailPt(t) {
     })
     $("#t3").show();
     $.ajax({
-        url: path + "getOffByProduct_id",
+        url: "/users/getOffByProduct_id",
         type: "post",
         data: {
             product_id: product_id
@@ -148,7 +148,7 @@ function getEmpName(emp_id) {
 function getAllEmpName(emp_id) {
     let text;
     $.ajax({
-        url: path + "getEmpName",
+        url: "/users/getEmpName",
         type: "post",
         data: {
             emp_id: emp_id,
@@ -177,7 +177,7 @@ function getDepName(dep_id) {
 function getAllDeps(dep_id) {
     let text;
     $.ajax({
-        url: path + "getDep",
+        url: "/users/getDep",
         type: "post",
         data: {
             dep_id: dep_id
@@ -213,7 +213,7 @@ function reUpdate() {
     })
     if (product_id && off_id && dep_id) {
         $.ajax({
-            url: path + "allotProduct",
+            url: "/users/allotProduct",
             type: "post",
             data: {
                 product_id: product_id,
@@ -248,7 +248,7 @@ function hideT1(t) {
 function getAllDep() {
     $("#t1").empty();
     $.ajax({
-        url: path + "getAllDep",
+        url: "/users/getAllDep",
         type: "get",
         async: false,
         dataType: "text",
@@ -274,7 +274,7 @@ function getDepEmps(t) {
     let product_id = $("#product_id").val();
     let off_id = $("#t2").val();
     $.ajax({
-        url: path + "getUser",
+        url: "/users/getUser",
         type: "post",
         data: {
             dep_id: dep_id,
@@ -316,7 +316,7 @@ function unCheck() {
 function getProEmps(product_id, dep_id, off_id) {
     let text = "";
     $.ajax({
-        url: path + "getProEmp",
+        url: "/users/getProEmp",
         type: "post",
         data: {
             product_id: product_id,
@@ -336,7 +336,7 @@ function getProEmps(product_id, dep_id, off_id) {
 function getOffEmp() {
     $("#t2").empty();
     $.ajax({
-        url: path + "getUser",
+        url: "/users/getUser",
         type: "post",
         async: false,
         data: {
@@ -372,7 +372,7 @@ function getType(type) {
 // 从数据库中取得当前所有的产品类型，并记录到当前网页
 function getTypes() {
     $.ajax({
-        url: path + "getType",
+        url: "/users/getType",
         type: "get",
         async: false,
         dataType: "text",
@@ -390,7 +390,7 @@ function getTypes() {
 function getScreenProduct() {
     let product_type_id = $("#types").val();
     $.ajax({
-        url: path + "getProductsByTypeId",
+        url: "/users/getProductsByTypeId",
         type: "post",
         data: {
             product_type_id: product_type_id,
@@ -409,7 +409,7 @@ function getSplitPage() {
     let limit = $("#pageNo").val();
     let product_type_id = $("#types").val();
     $.ajax({
-        url: path + "getProductsByTypeId",
+        url: "/users/getProductsByTypeId",
         type: "post",
         data: {
             product_type_id: product_type_id,

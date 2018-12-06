@@ -1,6 +1,6 @@
 function getOrders(num, tableId) {
     $.ajax({
-        url: path + "getOrders",
+        url: "/users/getOrders",
         type: "post",
         data: {
             appli_id: num,
@@ -32,7 +32,7 @@ function getEmpName(emp_id) {
     let text = "";
     if (emp_id && emp_id != "") {
         $.ajax({
-            url: path + "getEmpName",
+            url: "/users/getEmpName",
             type: "post",
             data: {
                 emp_id: emp_id,
@@ -50,7 +50,7 @@ function getEmpName(emp_id) {
 function getAllProducts() {
     let text;
     $.ajax({
-        url: path + "getProductById",
+        url: "/users/getProductById",
         type: "post",
         data: {
             product_id: "",
@@ -68,7 +68,7 @@ function getAllProducts() {
 function getFlows() {
     let text = "";
     $.ajax({
-        url: path + "getFlowByFlow_detail_id",
+        url: "/users/getFlowByFlow_detail_id",
         type: "post",
         data: {
             flow_detail_id: ""
@@ -170,7 +170,7 @@ function printTable(result, tableId) {
 function getAllFlow(order_id) {
     var text = "";
     $.ajax({
-        url: path + "getFlow",
+        url: "/users/getFlow",
         type: "post",
         data: {
             order_id: order_id
@@ -323,7 +323,7 @@ function select(t) {
     // var flow_id = $("#flow_id").val()
     // 打印状态表格的
     $.ajax({
-        url: path + "getStatess",
+        url: "/users/getStatess",
         type: "post",
         data: {
             order_id: order_id,
@@ -404,7 +404,7 @@ function getState() {
     let order_id = $("#order_id").val()
     var text = "";
     $.ajax({
-        url: path + "getState",
+        url: "/users/getState",
         type: "post",
         data: {
             order_id: order_id,
@@ -422,7 +422,7 @@ function getState() {
 //     let text = "";
 //     if (flow_detail_id && flow_detail_id != "") {
 //         $.ajax({
-//             url: path + "getFlowByFlow_detail_id",
+//             url: "/users/getFlowByFlow_detail_id",
 //             type: "post",
 //             data: {
 //                 flow_detail_id: flow_detail_id
@@ -487,7 +487,7 @@ function getStates(state_id) {
     var text = "";
     if (state_id) {
         $.ajax({
-            url: path + "getStates",
+            url: "/users/getStates",
             type: "post",
             data: {
                 state_id: state_id,
@@ -507,7 +507,7 @@ function getStates(state_id) {
 function getProduct(product_id) {
     let text = "";
     $.ajax({
-        url: path + "getProductsByTypeId",
+        url: "/users/getProductsByTypeId",
         type: "post",
         data: {
             product_id: product_id
@@ -543,7 +543,7 @@ function getAny(data) {
 function getTypes() {
     var text = "";
     $.ajax({
-        url: path + "getType",
+        url: "/users/getType",
         type: "get",
         async: false,
         dataType: "text",

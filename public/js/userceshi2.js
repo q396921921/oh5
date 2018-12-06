@@ -64,7 +64,7 @@ function existUpdate() {
 
 // 跳转当前测试1页面，即管理与创建
 function jump(num) {
-    window.location.href = path + 'user/ceshi' + num + '?menu=' + num;
+    window.location.href =  '/users/user/ceshi' + num + '?menu=' + num;
 }
 
 
@@ -80,7 +80,7 @@ function recoverAllreource() {
     let flag = confirmAct('确认要恢复所有账户权限吗？')
     if (flag) {
         $.ajax({
-            url: path + "recoverAllreource",
+            url: "/users/recoverAllreource",
             type: "get",
             async: false,
             dataType: "text",
@@ -112,7 +112,7 @@ function reUpdate() {
 function updateRoleResource(role_id) {
     let resource_id = getResourceId()
     $.ajax({
-        url: path + "updateRoleResource",
+        url: "/users/updateRoleResource",
         type: "post",
         data: {
             role_id: role_id,
@@ -135,7 +135,7 @@ function updateRoleToUser() {
     let resource_id = getResourceId();
     let emp_id = getEmpId();
     $.ajax({
-        url: path + "updateRoleToUser",
+        url: "/users/updateRoleToUser",
         type: "post",
         data: {
             resource_id: resource_id,
@@ -158,7 +158,7 @@ function updateUserResource() {
     let resource_id = getResourceId();
     let emp_id = getEmpId()[0];
     $.ajax({
-        url: path + "updateUserResource",
+        url: "/users/updateUserResource",
         type: "post",
         data: {
             resource_id: resource_id,
@@ -216,7 +216,7 @@ function getResourceId() {
 // 获得当前登录用户名的角色 ✔
 function getRole(username) {
     $.ajax({
-        url: path + "getRole",
+        url: "/users/getRole",
         type: "post",
         data: {
             username: username
@@ -250,7 +250,7 @@ function update() {
 // 动态打印所有角色或者单个用户对应的权限   ✔
 function getResource(id, type) {
     $.ajax({
-        url: path + "getResource",
+        url: "/users/getResource",
         type: "post",
         data: {
             id: id,
@@ -309,7 +309,7 @@ function output() {
     let update = $("#update").val();
     let roles = $("#roles").val();
     $.ajax({
-        url: path + "outputUser",
+        url: "/users/outputUser",
         type: "post",
         data: {
             power_type: update,
@@ -333,7 +333,7 @@ function detail(t) {
     $("#small").removeAttr('style', 'display');
     $("#small .canButton").attr('style', 'display:none')
     $.ajax({
-        url: path + "getOneUserResource",
+        url: "/users/getOneUserResource",
         type: "post",
         data: {
             emp_id: t,
@@ -353,7 +353,7 @@ function selectUsers(t) {
 
     } else {
         $.ajax({
-            url: path + "selectUsers",
+            url: "/users/selectUsers",
             type: "post",
             data: {
                 power_type: update,
@@ -398,7 +398,7 @@ function deleteUser(emp_id) {
     let flag = confirmAct('确认要删除此账户吗？');
     if (flag) {
         $.ajax({
-            url: path + "deleteUser",
+            url: "/users/deleteUser",
             type: "post",
             data: {
                 emp_id: emp_id,
@@ -421,7 +421,7 @@ function deleteUser(emp_id) {
 function recoverPower(emp_id) {
     confirmAct('确认要恢复此账户权限吗？')
     $.ajax({
-        url: path + "recoverPower",
+        url: "/users/recoverPower",
         type: "post",
         data: {
             emp_id: emp_id,
@@ -449,7 +449,7 @@ function getAny(data) {
 function getRoles() {
     let roles = $("#roles")
     $.ajax({
-        url: path + "getRoles",
+        url: "/users/getRoles",
         type: "get",
         async: false,
         dataType: "text",
@@ -477,7 +477,7 @@ function getSplitPage() {
 
     } else {
         $.ajax({
-            url: path + "selectUsers",
+            url: "/users/selectUsers",
             type: "post",
             data: {
                 power_type: update,

@@ -61,7 +61,7 @@ function getType(type) {
 function getTypes() {
     var text = "";
     $.ajax({
-        url: path + "getType",
+        url: "/users/getType",
         type: "get",
         async: false,
         dataType: "text",
@@ -76,7 +76,7 @@ function getStates(state_id) {
     var text = "";
     if (state_id) {
         $.ajax({
-            url: path + "getStates",
+            url: "/users/getStates",
             type: "post",
             data: {
                 state_id: state_id,
@@ -92,12 +92,12 @@ function getStates(state_id) {
 }
 // 跳转当前测试1页面，即全部与筛选
 function jump(num) {
-    window.location.href = path + 'appli/ceshi' + num + '?menu=' + num;
+    window.location.href =  '/users/appli/ceshi' + num + '?menu=' + num;
 }
 // 获取所有的筛选条件信息
 function getScreen() {
     $.ajax({
-        url: path + "getScreen",
+        url: "/users/getScreen",
         type: "post",
         data: {
             role_type: role_type,
@@ -242,7 +242,7 @@ function getOrderById() {
     deleteTb();
     let val = $("#aid").val();
     $.ajax({
-        url: path + "getOrders",
+        url: "/users/getOrders",
         type: "post",
         data: {
             appli_id: val,
@@ -295,7 +295,7 @@ function getScreenOrders() {
         data.role_type = 1;
     }
     $.ajax({
-        url: path + "screen",
+        url: "/users/screen",
         type: "post",
         data: data,
         async: false,
@@ -355,7 +355,7 @@ function getSplitPage() {
         data.role_type = 1;
     }
     $.ajax({
-        url: path + "screen",
+        url: "/users/screen",
         type: "post",
         data: data,
         async: false,
@@ -409,7 +409,7 @@ function output(t) {
     }
 
     $.ajax({
-        url: path + "writeScreenExcel",
+        url: "/users/writeScreenExcel",
         type: "post",
         data: data,
         async: false,
@@ -429,7 +429,7 @@ function getDep(dep_id) {
     var text = "";
     if (dep_id) {
         $.ajax({
-            url: path + "getDep",
+            url: "/users/getDep",
             type: "post",
             data: {
                 dep_id: dep_id
@@ -541,7 +541,7 @@ function printTable(names, rst) {
 function getAllEmpName(emp_id, dep_id, type) {
     let text;
     $.ajax({
-        url: path + "getEmpName",
+        url: "/users/getEmpName",
         type: "post",
         data: {
             emp_id: emp_id,

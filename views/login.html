@@ -8,11 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <script src="/js/jquery.min.js"></script>
-<script>
-    $(function () {
-
-    })
-</script>
 <style>
     * {
         margin: 0px;
@@ -87,7 +82,7 @@
             }
         });
         if (window != top) {
-            parent.window.location.href = path + "login";
+            parent.window.location.href = "/users/login";
             return;
         }
     })
@@ -95,7 +90,7 @@
         var username = $("#username").val();
         var password = $("#password").val();
         $.ajax({
-            url: path + "log",
+            url: "/users/log",
             type: "post",
             data: {
                 "username": username,
@@ -105,7 +100,7 @@
             dataType: "text",
             success: function (result) {
                 if (result != 'error') {
-                    window.location.href = path + "main?state=4&menu=1";
+                    window.location.href = "/users/main?state=4&menu=1";
                 }
             }
         })
@@ -121,6 +116,10 @@
         <div id="c">
             用户名:
             <input id="username" type="text" name="username">
+
+            <script>
+
+            </script>
             <br> 密&nbsp;&nbsp;码:
             <input id="password" type="password" name="password">
             <br>

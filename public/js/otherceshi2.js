@@ -2,7 +2,7 @@
 
 // 跳转当前测试1页面，即管理与创建
 function jump(num) {
-    window.location.href = path + 'other/ceshi' + num + '?menu=' + num;
+    window.location.href =  '/users/other/ceshi' + num + '?menu=' + num;
 }
 
 
@@ -48,7 +48,7 @@ function getSplitPage() {
     $("#select table tr:gt(0)").empty();
     let limit = $("#pageNo").val();
     $.ajax({
-        url: path + "getNews",
+        url: "/users/getNews",
         type: "post",
         data: {
             limit: limit
@@ -96,7 +96,7 @@ function daleteNew(t) {
         let dom = $(t).parent().parent().children().children('input[name="new_id"]');
         let new_id = dom.val();
         $.ajax({
-            url: path + "deleteNew",
+            url: "/users/deleteNew",
             type: "post",
             data: {
                 new_id: new_id
@@ -253,7 +253,7 @@ function setNewsData(tag, title, time, title2, newsData) {
 // 查找的
 function getAllNews(new_id) {
     $.ajax({
-        url: path + "getNews",
+        url: "/users/getNews",
         type: "post",
         data: "",
         async: false,

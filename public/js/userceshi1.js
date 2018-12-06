@@ -31,7 +31,7 @@ function removeGround(t) {
 
 // 跳转当前测试1页面，即管理与创建
 function jump(num) {
-    window.location.href = path + 'user/ceshi' + num + '?menu=' + num;
+    window.location.href =  '/users/user/ceshi' + num + '?menu=' + num;
 }
 
 
@@ -50,7 +50,7 @@ function jump(num) {
         let num = $("#num").val()
         let code = $("#roles").val()
         $.ajax({
-            url: path + "createUsers",
+            url: "/users/createUsers",
             type: "post",
             data: {
                 password: password,
@@ -99,7 +99,7 @@ function verifg(t) {
 // 通过传入用户名获得当前用户的角色，并判断是否为管理账户，如果是将框框打钩     ✔
 function getRole(username) {
     $.ajax({
-        url: path + "getRole",
+        url: "/users/getRole",
         type: "post",
         data: {
             username: username
@@ -122,7 +122,7 @@ function getRole(username) {
 function getRoles() {
     let roles = $("#roles")
     $.ajax({
-        url: path + "getRoles",
+        url: "/users/getRoles",
         type: "get",
         async: false,
         dataType: "text",

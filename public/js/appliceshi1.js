@@ -135,7 +135,7 @@ function setOffSelt(off_slt) {
 // function getNoHandleOrder() {
 //     let num = "";
 //     $.ajax({
-//         url: path + "getNoHandleOrders",
+//         url: "/users/getNoHandleOrders",
 //         type: "post",
 //         data: {
 //             order_type: 1,
@@ -161,7 +161,7 @@ function setFlow(t) {
     var order_id = $("#order_id").val()
     if (flag) {
         $.ajax({
-            url: path + "setFlow",
+            url: "/users/setFlow",
             type: "post",
             data: {
                 flow_detail_id: flow_detail_id,
@@ -214,7 +214,7 @@ function select(t) {
     // var flow_id = $("#flow_id").val()
     // 打印状态表格的
     $.ajax({
-        url: path + "getStatess",
+        url: "/users/getStatess",
         type: "post",
         data: {
             order_id: order_id,
@@ -295,7 +295,7 @@ function setFailReason(t) {
         failReason = set_n_br(failReason);
         var order_id = $("#order_id").val()
         $.ajax({
-            url: path + "setFailReason",
+            url: "/users/setFailReason",
             type: "post",
             data: {
                 order_id: order_id,
@@ -344,7 +344,7 @@ function setState(t) {
     if (flag1) {
         if (flag) {
             $.ajax({
-                url: path + "setState",
+                url: "/users/setState",
                 type: "post",
                 data: {
                     state_detail_id: state_detail_id,
@@ -536,7 +536,7 @@ function getState() {
     let order_id = $("#order_id").val()
     var text = "";
     $.ajax({
-        url: path + "getState",
+        url: "/users/getState",
         type: "post",
         data: {
             order_id: order_id,
@@ -553,7 +553,7 @@ function getState() {
 function getAllFlow(order_id) {
     var text = "";
     $.ajax({
-        url: path + "getFlow",
+        url: "/users/getFlow",
         type: "post",
         data: {
             order_id: order_id
@@ -599,7 +599,7 @@ function getOrders(num) {
         data.role_type = 1;
     }
     $.ajax({
-        url: path + "getOrders",
+        url: "/users/getOrders",
         type: "post",
         data: data,
         async: false,
@@ -629,7 +629,7 @@ function getSplitPage(num, tableId) {
         data.role_type = 1;
     }
     $.ajax({
-        url: path + "getOrders",
+        url: "/users/getOrders",
         type: "post",
         data: data,
         async: false,
@@ -650,7 +650,7 @@ function getSplitPage(num, tableId) {
 function getAllEmpName(emp_id, dep_id, type) {
     let text;
     $.ajax({
-        url: path + "getEmpName",
+        url: "/users/getEmpName",
         type: "post",
         data: {
             emp_id: emp_id,
@@ -672,7 +672,7 @@ function getAllEmpName(emp_id, dep_id, type) {
 function getAllProducts() {
     let text;
     $.ajax({
-        url: path + "getProductById",
+        url: "/users/getProductById",
         type: "post",
         data: {
             product_id: "",
@@ -691,7 +691,7 @@ function getAllProducts() {
 function getFlows() {
     let text = "";
     $.ajax({
-        url: path + "getFlowByFlow_detail_id",
+        url: "/users/getFlowByFlow_detail_id",
         type: "post",
         data: {
             flow_detail_id: ""
@@ -853,7 +853,7 @@ function deleteOrders(t) {
     let flag = confirmAct('您确认要删除此订单吗');
     if (flag) {
         $.ajax({
-            url: path + "deleteOrder",
+            url: "/users/deleteOrder",
             type: "post",
             data: {
                 order_id: order_id
@@ -1064,7 +1064,7 @@ function writeTime(t) {
 //     let text = "";
 //     if (flow_detail_id && flow_detail_id != "") {
 //         $.ajax({
-//             url: path + "getFlowByFlow_detail_id",
+//             url: "/users/getFlowByFlow_detail_id",
 //             type: "post",
 //             data: {
 //                 flow_detail_id: flow_detail_id
@@ -1085,7 +1085,7 @@ function writeTime(t) {
 function getProduct(product_id) {
     let text = "";
     $.ajax({
-        url: path + "getProductById",
+        url: "/users/getProductById",
         type: "post",
         data: {
             product_id: product_id
@@ -1144,7 +1144,7 @@ function setOrder_type(type_id) {
 function getTypes() {
     var text = "";
     $.ajax({
-        url: path + "getType",
+        url: "/users/getType",
         type: "get",
         async: false,
         dataType: "text",
@@ -1159,7 +1159,7 @@ function getStates(state_id) {
     var text = "";
     if (state_id) {
         $.ajax({
-            url: path + "getStates",
+            url: "/users/getStates",
             type: "post",
             data: {
                 state_id: state_id,
@@ -1177,7 +1177,7 @@ function getStates(state_id) {
 }
 // 跳转到申请管理页面即全部与筛选/统计      ✔
 function jump(num) {
-    window.location.href = path + 'appli/ceshi' + num + '?menu=' + num;
+    window.location.href =  '/users/appli/ceshi' + num + '?menu=' + num;
 }
 
 // 二次确认框
@@ -1200,7 +1200,7 @@ function setOrder_state(order_state, exist) {
     function abc() {
         let order_id = $("#order_id").val();
         $.ajax({
-            url: path + "setOrder_state2",
+            url: "/users/setOrder_state2",
             type: "post",
             data: {
                 order_state: order_state,
@@ -1234,7 +1234,7 @@ function setRefund_state(refund, exist) {
     if (flag) {
         let order_id = $("#order_id").val();
         $.ajax({
-            url: path + "setRefund_state",
+            url: "/users/setRefund_state",
             type: "post",
             data: {
                 refund: refund,
@@ -1253,7 +1253,7 @@ function setRefund_state(refund, exist) {
 
 function getThisOrderInfo(order_id) {
     $.ajax({
-        url: path + "getOrders",
+        url: "/users/getOrders",
         type: "post",
         data: {
             order_id: order_id,
@@ -1272,7 +1272,7 @@ function getThisOrderInfo(order_id) {
 // 得到利润 ✔
 function getProfit() {
     $.ajax({
-        url: path + "getProfit",
+        url: "/users/getProfit",
         type: "get",
         async: false,
         dataType: "text",
@@ -1286,7 +1286,7 @@ function getProfit() {
 function updateProfit(t) {
     let profit = $(t).val()
     $.ajax({
-        url: path + "updateProfit",
+        url: "/users/updateProfit",
         type: "post",
         data: {
             "profit": profit
@@ -1314,7 +1314,7 @@ function output() {
         data.role_type = 1;
     }
     $.ajax({
-        url: path + "writeOrederExcel",
+        url: "/users/writeOrederExcel",
         type: "post",
         data: data,
         async: false,
@@ -1370,7 +1370,7 @@ function submit(t) {
     function a(name, val) {
         let text = '';
         $.ajax({
-            url: path + "updateOrder",
+            url: "/users/updateOrder",
             type: "post",
             data: {
                 name: [name, val],

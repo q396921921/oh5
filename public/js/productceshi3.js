@@ -33,7 +33,7 @@ function removeGround(t) {
 
 // 跳转当前测试1页面，即全部与筛选
 function jump(num) {
-    window.location.href = path + 'product/ceshi' + num + '?menu=' + num;
+    window.location.href =  '/users/product/ceshi' + num + '?menu=' + num;
 }
 // 二次确认框
 function confirmAct(text) {
@@ -47,7 +47,7 @@ function confirmAct(text) {
 function getFlows() {
     $("#allFlows tr:gt(0)").empty()
     $.ajax({
-        url: path + "getFlowNameId",
+        url: "/users/getFlowNameId",
         type: "get",
         async: false,
         dataType: "text",
@@ -69,7 +69,7 @@ function deleteFlow(t) {
     if (flag) {
         let flow_id = $(t).parent().parent().children().children('input[name="flow_id"]').val();
         $.ajax({
-            url: path + "deleteFlow",
+            url: "/users/deleteFlow",
             type: "post",
             data: {
                 flow_id: flow_id

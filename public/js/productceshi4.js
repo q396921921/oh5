@@ -33,7 +33,7 @@ function removeGround(t) {
 
 // 跳转当前测试1页面，即全部与筛选
 function jump(num) {
-    window.location.href = path + 'product/ceshi' + num + '?menu=' + num;
+    window.location.href =  '/users/product/ceshi' + num + '?menu=' + num;
 }
 
 function showType() {
@@ -60,7 +60,7 @@ function updateFileType() {
             }
         })
         $.ajax({
-            url: path + "updateFileType",
+            url: "/users/updateFileType",
             type: "post",
             data: {
                 file_type_id: file_type_id,
@@ -96,7 +96,7 @@ function confirmAct(t) {
 function getDetailFileTypes() {
     $("#allDetailTypes tr:gt(0)").empty()
     $.ajax({
-        url: path + "getDetailFileType",
+        url: "/users/getDetailFileType",
         type: "get",
         async: false,
         dataType: "text",
@@ -121,7 +121,7 @@ function deleteDetailType(t) {
     if (flag) {
         let detail_file_type_id = $(t).parent().parent().children().children('input[name="detail_file_type_id"]').val();
         $.ajax({
-            url: path + "deleteDetailFileType",
+            url: "/users/deleteDetailFileType",
             type: "post",
             data: {
                 detail_file_type_id: detail_file_type_id
@@ -147,7 +147,7 @@ function deleteFileType(t) {
     if (flag) {
         let file_type_id = $(t).parent().parent().children().children('input[name="file_type_id"]').val();
         $.ajax({
-            url: path + "deleteFileType",
+            url: "/users/deleteFileType",
             type: "post",
             data: {
                 file_type_id: file_type_id
@@ -171,7 +171,7 @@ function deleteFileType(t) {
 function getDetailFileType() {
     $("#updateFileType tr:gt(0)").empty()
     $.ajax({
-        url: path + "getDetailFileType",
+        url: "/users/getDetailFileType",
         type: "get",
         async: false,
         dataType: "text",
@@ -192,7 +192,7 @@ function getFile_type() {
     let text = "";
     $("#allTypes tr:gt(0)").empty()
     $.ajax({
-        url: path + "getFile_typeNameId",
+        url: "/users/getFile_typeNameId",
         type: "get",
         async: false,
         dataType: "text",
@@ -216,7 +216,7 @@ function setDetailChecked(file_type_id) {
         $(this).removeAttr('checked');
     })
     $.ajax({
-        url: path + "getDetailFile_types",
+        url: "/users/getDetailFile_types",
         type: "post",
         data: {
             file_type_id: file_type_id

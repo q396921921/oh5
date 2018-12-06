@@ -61,7 +61,7 @@ function getType(type) {
 function getTypes() {
     var text = "";
     $.ajax({
-        url: path + "getType",
+        url: "/users/getType",
         type: "get",
         async: false,
         dataType: "text",
@@ -76,7 +76,7 @@ function getStates(state_id) {
     var text = "";
     if (state_id) {
         $.ajax({
-            url: path + "getStates",
+            url: "/users/getStates",
             type: "post",
             data: {
                 state_id: state_id,
@@ -93,7 +93,7 @@ function getStates(state_id) {
 // 获取所有的筛选条件信息
 function getScreen() {
     $.ajax({
-        url: path + "getScreen",
+        url: "/users/getScreen",
         type: "post",
         data: {
             role_type: role_type,
@@ -191,7 +191,7 @@ function getOrderById() {
     deleteTb();
     let val = $("#aid").val();
     $.ajax({
-        url: path + "getOrders",
+        url: "/users/getOrders",
         type: "post",
         data: {
             appli_id: val,
@@ -226,7 +226,7 @@ function getScreenOrders() {
     var time1 = $("#time1").val()
     var time2 = $("#time2").val()
     $.ajax({
-        url: path + "screen",
+        url: "/users/screen",
         type: "post",
         data: {
             'order_type': order_type,
@@ -277,7 +277,7 @@ function getSplitScreenOrders() {
     var time1 = $("#time1").val()
     var time2 = $("#time2").val()
     $.ajax({
-        url: path + "screen",
+        url: "/users/screen",
         type: "post",
         data: {
             'order_type': order_type,
@@ -318,7 +318,7 @@ function getSplitScreenOrders() {
 function getDep(dep_id) {
     var text = "";
     $.ajax({
-        url: path + "getDep",
+        url: "/users/getDep",
         type: "post",
         data: {
             dep_id: dep_id

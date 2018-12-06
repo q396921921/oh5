@@ -110,7 +110,7 @@
         if (product_type_id && product_id) {
             $("#submit").show();
             $.ajax({
-                url: path + "getProductsByTypeId",
+                url: "/users/getProductsByTypeId",
                 type: "post",
                 data: {
                     product_id: product_id
@@ -121,7 +121,7 @@
                     let text = JSON.parse(result).data[0]
                     let file_type_id = text.file_type_id;
                     $.ajax({
-                        url: path + "getDetailFile_types",
+                        url: "/users/getDetailFile_types",
                         type: "post",
                         data: {
                             file_type_id: file_type_id
@@ -196,7 +196,7 @@
     function getTypes() {
         $("#submit").hide();
         $.ajax({
-            url: path + "getType",
+            url: "/users/getType",
             type: "get",
             async: false,
             dataType: "text",
@@ -219,7 +219,7 @@
         let product_type_id = $(t).val();
         setProduct_type_id(product_type_id);
         $.ajax({
-            url: path + "getProductsByTypeId",
+            url: "/users/getProductsByTypeId",
             type: "post",
             data: {
                 product_type_id: product_type_id
