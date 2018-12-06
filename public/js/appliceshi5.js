@@ -648,7 +648,6 @@ function getOrders(num) {
             $("#totalPage").val(Math.ceil(data.length / 20));
             $("#totalNum").val(data.length)
             data = JSON.stringify(data)
-            $("#allOrder").val(data)
         }
     })
 }
@@ -676,7 +675,6 @@ function getSplitPage(num, tableId) {
         success: function (result) {
             let data = JSON.parse(result).result
             data = JSON.stringify(data)
-            $("#allOrder").val(data)
             printTable(result, tableId);
 
             $("#pages").val(limit);
@@ -688,13 +686,19 @@ function getSplitPage(num, tableId) {
 }
 // 导出excel文件    ✔
 function output() {
-    let val = $("#allOrder").val();
+    let data = {
+        order_type: 3,
+        role_type: role_type,
+        userdep_id: userdep_id,
+        busoff_id: busoff_id
+    }
+    if (r32 == 1) {
+        data.role_type = 1;
+    }
     $.ajax({
-        url: path + "writeExcel",
+        url: path + "writeOrederExcel",
         type: "post",
-        data: {
-            "data": val
-        },
+        data: data,
         async: false,
         dataType: "text",
         success: function (result) {

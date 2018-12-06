@@ -19,6 +19,10 @@ module.exports = {
         let sql = "select emp_id from emp where iiuv = ? and type!=6";
         get.getData(sql, arr, callback);
     },
+    getEmpNotUser6: function (callback) {
+        let sql = "select * from emp where type!=6";
+        get.getData(sql, [], callback);
+    },
     /**
      * 查询用户表
      */

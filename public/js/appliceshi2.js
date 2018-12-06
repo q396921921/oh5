@@ -304,6 +304,7 @@ function getScreenOrders() {
             let names = getSelect();
             types = getTypes()
             let data = JSON.parse(result).result;
+            $("#data").val(JSON.stringify(data));
             let totalMoney = 0;
             for (let i = 0; i < data.length; i++) {
                 let money = data[i].money
@@ -311,12 +312,11 @@ function getScreenOrders() {
                     totalMoney += money;
                 }
             }
-
             $("#totalPage").val(Math.ceil(data.length / 10));
             $("#totalNum").val(data.length)
-            getSplitPage()
             $("#totalOrder").val(data.length);
             $("#totalMoney").val(totalMoney);
+            getSplitPage()
 
         }
     })
@@ -364,11 +364,9 @@ function getSplitPage() {
             let names = getSelect();
             types = getTypes()
             result = JSON.parse(result).result;
-            $("#data").val(JSON.stringify(result));
             $("#pages").val(limit);
             $("#lstd span:first").html(limit);
             $("#lstd span:last").html($("#totalPage").val());
-
             deleteTb()
             printTr(names)
             for (let i = 0; i < result.length; i++) {
@@ -381,13 +379,39 @@ function getSplitPage() {
 
 function output(t) {
     $(t).prev().trigger("click");
-    let val = $("#data").val();
+    var type = $("#type").val();
+    let order_type = $("#order_type").val();
+    var channel_id = $("#channel").val();
+    var business_id = $("#business").val();
+    var office_id = $("#office").val();
+    var dep_id = $("#dep_id").val();
+    var order_state = $("#order_state").val();
+    var timeType = $('input[name="timeType"]:checked').val();
+    var time1 = $("#time1").val()
+    var time2 = $("#time2").val()
+    let data = {
+        'order_type': order_type,
+        "type": type,
+        "channel_id": channel_id,
+        "business_id": business_id,
+        "office_id": office_id,
+        "dep_id": dep_id,
+        "order_state": order_state,
+        "time1": time1,
+        "time2": time2,
+        "timeType": timeType,
+        role_type: role_type,
+        userdep_id: userdep_id,
+        busoff_id: busoff_id,
+    };
+    if (r32 == 1) {
+        data.role_type = 1;
+    }
+
     $.ajax({
-        url: path + "writeExcel",
+        url: path + "writeScreenExcel",
         type: "post",
-        data: {
-            "data": val
-        },
+        data: data,
         async: false,
         dataType: "text",
         success: function (result) {

@@ -88,8 +88,6 @@ module.exports = {
         if (limit && limit != '') {
             sql += ' limit ' + (limit - 1) * 10 + ',10';
         }
-
-
         get.getData(sql, arr, callback);
     },
     getOrderSplitPage: function (otjs, data, arr, callback) {

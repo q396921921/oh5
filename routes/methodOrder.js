@@ -1364,44 +1364,36 @@ module.exports = {
           }
         }
         let count = 0;
-        async.eachSeries(
-          detail_flow_id_arr,
-          function (detail_flow_id, cb2) {
-            otherOrder.insertRelationFlow(
-              [flow_id, detail_flow_id],
-              (err, ret) => {
-                if (err) {
-                  debug("为流程中间表赋值时出现错误");
-                  cb("error");
-                } else {
-                  async.eachSeries(
-                    arr[count],
-                    function (detail_state_id, cb3) {
-                      // if (isNaN(detail_state_id)) {
-                      //     cb3();
-                      // } else {
-                      otherOrder.insertRelationState(
-                        [detail_flow_id, detail_state_id],
-                        (err, ret2) => {
-                          if (err) {
-                            debug("为状态中间表赋值时出现错误");
-                            cb("error");
-                          } else {
-                            cb3();
-                          }
-                        }
-                      );
-                      // }
-                    },
-                    function (err) {
-                      count++;
-                      cb2();
-                    }
-                  );
+        async.eachSeries(detail_flow_id_arr, function (detail_flow_id, cb2) {
+          otherOrder.insertRelationFlow([flow_id, detail_flow_id], (err, ret) => {
+            if (err) {
+              debug("为流程中间表赋值时出现错误");
+              cb("error");
+            } else {
+              async.eachSeries(arr[count], function (detail_state_id, cb3) {
+                // if (isNaN(detail_state_id)) {
+                //     cb3();
+                // } else {
+                otherOrder.insertRelationState([detail_flow_id, detail_state_id], (err, ret2) => {
+                  if (err) {
+                    debug("为状态中间表赋值时出现错误");
+                    cb("error");
+                  } else {
+                    cb3();
+                  }
                 }
-              }
-            );
-          },
+                );
+                // }
+              },
+                function (err) {
+                  count++;
+                  cb2();
+                }
+              );
+            }
+          }
+          );
+        },
           function (err) {
             cb("success");
           }
@@ -2031,152 +2023,25 @@ module.exports = {
    * @param {Object} results  results[json对象，json对象]
    * @param {any} callback    callback("true或者false") true写入成功，false写入失败
    */
-  writeExcel: function (results, callback) {
-    let arrStr = public.outputTitleArrOrder;
-    let data = [arrStr];
-    // fs.writeFileSync('b.xlsx', buffer, 'binary');
-    async.eachSeries(
-      results,
-      function (result, cb) {
-        let keys = Object.keys(result);
-        let arr = [];
-        async.eachSeries(
-          keys,
-          function (k, cb2) {
-            let time;
-            switch (k) {
-              case "emp_id":
-                cb2();
-                break;
-              case "relation_state_id":
-                getState(result[k], rt => {
-                  arr.push(rt);
-                  cb2();
-                });
-                break;
-              case "flowState":
-                getFlow(result[k], rt => {
-                  arr.push(rt);
-                  cb2();
-                });
-                break;
-              case "product_id":
-                getProduct(result[k], rt => {
-                  arr.push(rt);
-                  cb2();
-                });
-                break;
-              case "order_state":
-                getOrderState(result[k], rt => {
-                  arr.push(rt);
-                  cb2();
-                });
-                break;
-              case "seeTime":
-                time = Date.parse(new Date(result[k]));
-                getTime(time, rt => {
-                  arr.push(rt);
-                  cb2();
-                });
-                break;
-              case "loanTime":
-                time = Date.parse(new Date(result[k]));
-                getTime(time, rt => {
-                  arr.push(rt);
-                  cb2();
-                });
-                break;
-              case "type":
-                getType(result[k], rt => {
-                  arr.push(rt);
-                  cb2();
-                });
-                break;
-              case "failReason":
-                set_br_n(result[k], rt => {
-                  arr.push(rt);
-                  cb2();
-                });
-                break;
-              case "empComment":
-                set_br_n(result[k], rt => {
-                  arr.push(rt);
-                  cb2();
-                });
-                break;
-              case "userComment":
-                set_br_n(result[k], rt => {
-                  arr.push(rt);
-                  cb2();
-                });
-                break;
-              case "appliTime":
-                time = Date.parse(new Date(result[k]));
-                getTime(time, rt => {
-                  arr.push(rt);
-                  cb2();
-                });
-                break;
-              case "order_type":
-                cb2();
-                break;
-              case "channel_id":
-                getEmpName(result[k], rt => {
-                  arr.push(rt);
-                  cb2();
-                });
-                break;
-              case "office_id":
-                getEmpName(result[k], rt => {
-                  arr.push(rt);
-                  cb2();
-                });
-                break;
-              case "business_id":
-                getEmpName(result[k], rt => {
-                  arr.push(rt);
-                  cb2();
-                });
-                break;
-              case "card_name":
-                arr.push(result[k]);
-                cb2("over");
-                break;
-              // case 'orderFile':
-              //     let val = result[k].toString().split(';');
-              //     splitOrderFile(val, (rt) => {
-              //         arr.push(rt);
-              //         cb2();
-              //     })
-              //     break;
-              default:
-                arr.push(result[k]);
-                cb2();
-            }
-          },
-          function (err) {
-            data.push(arr);
-            cb();
-          }
-        );
-      },
-      function (err, rst) {
-        let buffer = xlsx.build([{ name: "sheet1", data: data }]);
-        let timeStr = new Date().getTime();
-        let pathStr = path.join(
-          __dirname,
-          "../public/" + excelFile + "/" + timeStr + ".xlsx"
-        );
-        fs.writeFile(pathStr, buffer, "binary", function (err) {
-          if (err) {
-            callback("false", null);
-          } else {
-            timer.deleteExcel(pathStr);
-            callback("true", pathStr);
-          }
-        });
+  writeScreenExcel: function (body, callback) {
+    this.screen(body, (ret) => {
+      if (ret == 'error') {
+        callback('error');
+      } else {
+        let results = JSON.parse(ret).result;
+        writeExcel(results, callback)
       }
-    );
+    })
+  },
+  writeOrederExcel: function (body, callback) {
+    this.getOrders(body, (ret) => {
+      if (ret == 'error') {
+        callback('error');
+      } else {
+        let results = JSON.parse(ret).result;
+        writeExcel(results, callback);
+      }
+    })
   },
   /**
    * 为total_profit表中的count赋值，也就是订单编号尾数
@@ -2193,7 +2058,152 @@ module.exports = {
     });
   }
 };
-
+function writeExcel(results, callback) {
+  let arrStr = public.outputTitleArrOrder;
+  let data = [arrStr];
+  async.eachSeries(
+    results,
+    function (result, cb) {
+      let keys = Object.keys(result);
+      let arr = [];
+      async.eachSeries(
+        keys,
+        function (k, cb2) {
+          let time;
+          switch (k) {
+            case "emp_id":
+              cb2();
+              break;
+            case "relation_state_id":
+              getState(result[k], rt => {
+                arr.push(rt);
+                cb2();
+              });
+              break;
+            case "flowState":
+              getFlow(result[k], rt => {
+                arr.push(rt);
+                cb2();
+              });
+              break;
+            case "product_id":
+              getProduct(result[k], rt => {
+                arr.push(rt);
+                cb2();
+              });
+              break;
+            case "order_state":
+              getOrderState(result[k], rt => {
+                arr.push(rt);
+                cb2();
+              });
+              break;
+            case "seeTime":
+              time = Date.parse(new Date(result[k]));
+              getTime(time, rt => {
+                arr.push(rt);
+                cb2();
+              });
+              break;
+            case "loanTime":
+              time = Date.parse(new Date(result[k]));
+              getTime(time, rt => {
+                arr.push(rt);
+                cb2();
+              });
+              break;
+            case "type":
+              getType(result[k], rt => {
+                arr.push(rt);
+                cb2();
+              });
+              break;
+            case "failReason":
+              set_br_n(result[k], rt => {
+                arr.push(rt);
+                cb2();
+              });
+              break;
+            case "empComment":
+              set_br_n(result[k], rt => {
+                arr.push(rt);
+                cb2();
+              });
+              break;
+            case "userComment":
+              set_br_n(result[k], rt => {
+                arr.push(rt);
+                cb2();
+              });
+              break;
+            case "appliTime":
+              time = Date.parse(new Date(result[k]));
+              getTime(time, rt => {
+                arr.push(rt);
+                cb2();
+              });
+              break;
+            case "order_type":
+              cb2();
+              break;
+            case "channel_id":
+              getEmpName(result[k], rt => {
+                arr.push(rt);
+                cb2();
+              });
+              break;
+            case "office_id":
+              getEmpName(result[k], rt => {
+                arr.push(rt);
+                cb2();
+              });
+              break;
+            case "business_id":
+              getEmpName(result[k], rt => {
+                arr.push(rt);
+                cb2();
+              });
+              break;
+            case "card_name":
+              arr.push(result[k]);
+              cb2("over");
+              break;
+            // case 'orderFile':
+            //     let val = result[k].toString().split(';');
+            //     splitOrderFile(val, (rt) => {
+            //         arr.push(rt);
+            //         cb2();
+            //     })
+            //     break;
+            default:
+              arr.push(result[k]);
+              cb2();
+          }
+        },
+        function (err) {
+          data.push(arr);
+          cb();
+        }
+      );
+    },
+    function (err, rst) {
+      let buffer = xlsx.build([{ name: "sheet1", data: data }]);
+      let timeStr = new Date().getTime();
+      let pathStr = path.join(
+        __dirname,
+        "../public/" + excelFile + "/" + timeStr + ".xlsx"
+      );
+      fs.writeFile(pathStr, buffer, "binary", function (err) {
+        if (err) {
+          callback("false", null);
+        } else {
+          timer.deleteExcel(pathStr);
+          callback("true", pathStr);
+        }
+      });
+    }
+  );
+}
 function set_br_n(text, cb) {
   let str = "";
   if (text) {

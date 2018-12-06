@@ -794,64 +794,84 @@ module.exports = {
     outputUsers: function (results, callback) {
         let strArr = public.outputTitleArrUser;
         let data = [strArr];
-        
-        async.eachSeries(results, function (result, cb) {
-            let keys = Object.keys(result);
-            let arr = [];
-            async.eachSeries(keys, function (k, cb2) {
-                if (k == 'dep_id') {
-                    getDep(result[k], (rt) => {
-                        arr.push(rt);
-                        cb2()
+        queryEmp.getEmp({}, [], (err, ret) => {
+            results = ret;
+            queryEmp.getEmpNotUser6((err, ret2) => {
+                let emps = ret2;
+                async.eachSeries(results, function (result, cb) {
+                    let keys = Object.keys(result);
+                    let arr = [];
+                    async.eachSeries(keys, function (k, cb2) {
+                        if (k == 'dep_id') {
+                            getDep(result[k], (rt) => {
+                                arr.push(rt);
+                                cb2()
+                            })
+                        } else if (k == 'emp_id' || k == 'password') {
+                            cb2()
+                        } else if (k == 'gender') {
+                            if (result[k] == 1) {
+                                arr.push('男')
+                            } else {
+                                arr.push('女')
+                            }
+                            cb2()
+                        } else if (k == 'type') {
+                            getRole(result[k], (rt) => {
+                                arr.push(rt)
+                                cb2()
+                            })
+                        } else if (k == 'registTime' || k == 'logTime' || k == 'submitTime') {
+                            let time = Date.parse(new Date(result[k]));
+                            getTime(time, (rt) => {
+                                arr.push(rt)
+                                cb2()
+                            })
+                        } else if (k == 'power_type') {
+                            if (result[k] == 1) {
+                                arr.push('否')
+                            } else {
+                                arr.push('是')
+                            }
+                            cb2('over')
+                        } else if (k == 'iiuv') {
+                            arr.push(result[k]);
+                            if (result[k] && result[k] != "") {
+                                for (let i = 0; i < emps.length; i++) {
+                                    const name = emps[i].name;
+                                    const iiuv = emps[i].iiuv;
+                                    if (iiuv == result[k]) {
+                                        arr.push(name);
+                                        break;
+                                    }
+                                }
+                            } else {
+                                arr.push('暂无');
+                            }
+                            cb2();
+                        } else {
+                            arr.push(result[k])
+                            cb2()
+                        }
+                    }, function (err) {
+                        data.push(arr);
+                        cb()
                     })
-                } else if (k == 'emp_id' || k == 'password') {
-                    cb2()
-                } else if (k == 'gender') {
-                    if (result[k] == 1) {
-                        arr.push('男')
-                    } else {
-                        arr.push('女')
-                    }
-                    cb2()
-                } else if (k == 'type') {
-                    getRole(result[k], (rt) => {
-                        arr.push(rt)
-                        cb2()
-                    })
-                } else if (k == 'registTime' || k == 'logTime' || k == 'submitTime') {
-                    let time = Date.parse(new Date(result[k]));
-                    getTime(time, (rt) => {
-                        arr.push(rt)
-                        cb2()
-                    })
-                } else if (k == 'power_type') {
-                    if (result[k] == 1) {
-                        arr.push('否')
-                    } else {
-                        arr.push('是')
-                    }
-                    cb2('over')
-                } else {
-                    arr.push(result[k])
-                    cb2()
-                }
-            }, function (err) {
-                data.push(arr);
-                cb()
+                }, function (err, rst) {
+                    let buffer = xlsx.build([{ name: "sheet1", data: data }]);
+                    let timeStr = new Date().getTime()
+                    let pathStr = path.join(__dirname, '../public/' + excelFile + '/' + timeStr + '.xlsx');
+                    fs.writeFile(pathStr, buffer, 'binary', function (err) {
+                        if (err) {
+                            callback('false', null);
+                        }
+                        else {
+                            timer.deleteExcel(pathStr)
+                            callback('true', pathStr);
+                        }
+                    });
+                })
             })
-        }, function (err, rst) {
-            let buffer = xlsx.build([{ name: "sheet1", data: data }]);
-            let timeStr = new Date().getTime()
-            let pathStr = path.join(__dirname, '../public/' + excelFile + '/' + timeStr + '.xlsx');
-            fs.writeFile(pathStr, buffer, 'binary', function (err) {
-                if (err) {
-                    callback('false', null);
-                }
-                else {
-                    timer.deleteExcel(pathStr)
-                    callback('true', pathStr);
-                }
-            });
         })
     }
 }

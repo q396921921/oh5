@@ -637,7 +637,6 @@ function getSplitPage(num, tableId) {
         success: function (result) {
             let data = JSON.parse(result).result
             data = JSON.stringify(data)
-            $("#allOrder").val(data)
             printTable(result, tableId);
 
             $("#pages").val(limit);
@@ -991,8 +990,8 @@ function getOneOrders(t) {
         let line2 = '<td height="20px;" width="80px;"><y class="line" style="background:blue"></y></td>'
         let line3 = '<td height="20px;" width="80px;"><y class="line" style="display:none"></y></td>';
         let circle1 = '<td height="100px;" width="100px;"><input type="hidden" name="' + flow_detail_id + '" value="' + val + '"><x class="circle" onclick="select(this)" ></x><input type="hidden" value="1"></td>'
-        let circle2 = '<td height="100px;" width="100px;"><input type="hidden" name="' + flow_detail_id + ' value="' + val + '"><x class="circle" onclick="select(this)" style="background:blue;"></x><input type="hidden" value="1"></td>'
-        let circle3 = '<td height="100px;" width="100px;"><input type="hidden" name="' + flow_detail_id + ' value="' + val + '"><x class="circle" onclick="select(this)" style="background:red;"></x><input type="hidden" value="1"></td>'
+        let circle2 = '<td height="100px;" width="100px;"><input type="hidden" name="' + flow_detail_id + '" value="' + val + '"><x class="circle" onclick="select(this)" style="background:blue;"></x><input type="hidden" value="1"></td>'
+        let circle3 = '<td height="100px;" width="100px;"><input type="hidden" name="' + flow_detail_id + '" value="' + val + '"><x class="circle" onclick="select(this)" style="background:red;"></x><input type="hidden" value="1"></td>'
         // 流程名
         let tdtext1 = '<td colspan="2" style="text-align: left;">' + val + '</td>';
         // 日期
@@ -1305,20 +1304,26 @@ function updateProfit(t) {
 }
 // 导出excel文件    ✔
 function output() {
-    let val = $("#allOrder").val();
+    let data = {
+        order_type: 1,
+        role_type: role_type,
+        userdep_id: userdep_id,
+        busoff_id: busoff_id
+    }
+    if (r32 == 1) {
+        data.role_type = 1;
+    }
     $.ajax({
-        url: path + "writeExcel",
+        url: path + "writeOrederExcel",
         type: "post",
-        data: {
-            "data": val
-        },
+        data: data,
         async: false,
         dataType: "text",
         success: function (result) {
             if (result == 'error') {
                 alert('导出失败')
             } else {
-                let pt2 = result.split(excelFile + '/')[1];
+                let pt2 = result.split(excelFile + symbol)[1];
                 window.location.href = http + excelFile + '/' + pt2;
             }
         }

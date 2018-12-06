@@ -41,7 +41,8 @@ router.post('/log', function (req, res, next) {
   let username = body.username;
   mdEmp.getUserByUserPass(body, (ret) => {
     if (ret == 'success') {
-      res.cookie("username", username)
+      res.cookie("username", username);
+      console.log('我设置了username', username);
       res.send(username);
     } else if (ret == 'error') {
       res.send('error')
@@ -56,15 +57,21 @@ router.get('/upload/*', function (req, res, next) {
   res.sendfile("." + ulstr)
 })
 
-// router.all('/*', function (req, res, next) {
-//   let username = req.cookies.username;
-//   if (username && username != "") {
-//     next();
-//   } else {
-//     res.render('login')
-//   }
-// })
-
+router.all('/*', function (req, res, next) {
+  let username = req.cookies.username;
+  console.log('username', username);
+  if (username && username != "") {
+    next();
+  } else {
+    console.log('我跳转了');
+    console.log(username);
+    console.log(req.url);
+    res.render('login');
+  }
+})
+router.get('/iframe', function (req, res, next) {
+  res.render('iframe')
+});
 router.get('/main', function (req, res, next) {
   let ul = url.parse(req.url)
   ul = qs.parse(ul.query)
@@ -80,9 +87,6 @@ router.post('/outUser', function (req, res, next) {
   res.send('success')
 })
 
-router.get('/iframe', function (req, res, next) {
-  res.render('iframe')
-});
 
 router.get('/appli/ceshi*', function (req, res, next) {
   let ul = url.parse(req.url)
@@ -91,7 +95,7 @@ router.get('/appli/ceshi*', function (req, res, next) {
   ul = qs.parse(ul.query)
   let menu = ul.menu;
   res.cookie('menu', menu);
-  res.render(ulstr, { ttt: 123456 })
+  res.render(ulstr)
 });
 router.post('/getOrders', function (req, res, next) {
   let body = req.body;
@@ -226,10 +230,19 @@ router.post('/getDep', function (req, res, next) {
     res.send(ret);
   })
 })
-router.post('/writeExcel', function (req, res, next) {
+router.post('/writeScreenExcel', function (req, res, next) {
   let body = req.body;
-  let data = body.data;
-  mdOrder.writeExcel(JSON.parse(data), (flag, pathStr) => {
+  mdOrder.writeScreenExcel(body, (flag, pathStr) => {
+    if (flag == 'true') {
+      res.send(pathStr)
+    } else {
+      res.send('error')
+    }
+  })
+})
+router.post('/writeOrederExcel', function (req, res, next) {
+  let body = req.body;
+  mdOrder.writeOrederExcel(body, (flag, pathStr) => {
     if (flag == 'true') {
       res.send(pathStr)
     } else {

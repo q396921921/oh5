@@ -48,8 +48,8 @@ function tpageNoClick() {
     }
 }
 function splitPageCss() {
-    let pageNo = $("#pageNo").val();
-    let totalPage = $("#totalPage").val();
+    let pageNo = Number($("#pageNo").val());
+    let totalPage = Number($("#totalPage").val());
     if (totalPage == 1 && pageNo == 1) {
         $("#fir").hide();
         $("#pre").hide();

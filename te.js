@@ -58,3 +58,7 @@ function toBuffer(ab) {
 // // var buf = new Uint8Array([11,22,33]);
 // let a = arrayBufferToBase64([11,22,33]); //"CxYh"
 // console.log(a );
+
+let a = 'd:\nodeApp\oh5\public\excelFile\1544003920790.xlsx';
+let pt2 = a.split('excelFile' + '\/')[1];
+console.log(pt2);

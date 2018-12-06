@@ -159,7 +159,6 @@ router.get('/getzizhiInfo', function (req, res, next) {
 router.post('/getNews', function (req, res, next) {
     let body = req.body;
     // body = JSON.parse(Object.keys(body));   // 手机端数据接收
-    console.log(body);
     mdData.getNews(body, (ret) => {
         res.send(ret);
     })
